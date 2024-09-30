@@ -64,7 +64,7 @@ export default {
                         borderColor: 'rgb(75, 192, 192)',
                         tension: 0.1,
                         pointRadius: prices.map((_, index) => annotations.some(a => a.index === index) ? 5 : 3),
-                        pointStyle: prices.map((_, index) => annotations.some(a => a.index === index) ? 'crossRot' : 'circle'), // 無資料點-使用cross標註
+                        pointStyle: prices.map((_, index) => annotations.some(a => a.index === index) ? 'crossRot' : 'circle'),
                     }]
                 },
                 options: {
@@ -91,7 +91,6 @@ export default {
             }
             return labels;
         }
-
     }
 };
 </script>
@@ -101,6 +100,24 @@ export default {
     position: relative;
     margin: auto;
     height: 30vh;
-    width: 100wh;
+    width: 100%; /* 設置容器寬度為 100% */
+    overflow-x: auto; /* 添加橫向滾動 */
+}
+
+canvas {
+    width: 150%; /* 設置 canvas 的寬度大於容器寬度 */
+    max-width: none; /* 確保 canvas 不會縮放到容器大小 */
+    display: block; /* 使 canvas 成為塊級元素，防止折行 */
+}
+
+/* 小螢幕的調整 */
+@media (max-width: 768px) {
+    .chart-container {
+        height: 50vh; /* 在小螢幕上增加高度 */
+    }
+
+    canvas {
+        width: 300%; /* 在小螢幕上增加 canvas 寬度，確保有足夠的內容讓滑動生效 */
+    }
 }
 </style>

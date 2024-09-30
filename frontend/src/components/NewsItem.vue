@@ -63,7 +63,7 @@ export default {
 
 <style scoped>
 .news-item {
-    padding: 1em;
+    padding: 2vw; /* 使用相對單位來設定 padding */
 }
 
 .news-item h2 {
@@ -72,7 +72,7 @@ export default {
 }
 
 .news-item p {
-    margin: .5em 0;
+    margin: 0.5em 0;
     text-align: start;
     font-size: 1.1em;
 }
@@ -81,84 +81,90 @@ export default {
     color: #888;
 }
 
-.container{
+.container {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.summary-btn{
+.summary-btn {
     font-size: 2em;
     display: none;
     cursor: pointer;
 }
 
-.summary-btn:hover{
+.summary-btn:hover {
     color: #f0ad4e;
 }
 
-.news-item:hover .summary-btn{
+.news-item:hover .summary-btn {
     display: block;
 }
 
-.texts{
-    padding: 1em;
-    border-radius: .5em;
-    margin-right: 1em;
-    width: 100%;
+.texts {
+    padding: 2vw; /* 使用相對單位來設定內部 padding */
+    border-radius: 0.5em;
+    margin-right: 1vw; /* 使用相對單位 */
+    width: calc(100% - 3vw); /* 考慮到外部留白 */
 }
 
-.texts:hover{
+.texts:hover {
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-.upvote-btn{
+.upvote-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    padding: .5em 2em;
+    padding: 0.5em 2em;
     border-radius: 1em;
     width: 3em;
     height: 3em;
 }
 
-.upvote-btn span{
-    margin-left: .25em;
+.upvote-btn span {
+    margin-left: 0.25em;
     font-size: 1.2em;
-    color: rgba(0,0,0,0.5);
+    color: rgba(0, 0, 0, 0.5);
     font-weight: bold;
 }
 
-.upvote-btn:hover{
+.upvote-btn:hover {
     cursor: pointer;
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
-.upvote-btn > i{
+.upvote-btn > i {
     font-size: 1.5em;
-    color: rgba(0,0,0,0.5);
+    color: rgba(0, 0, 0, 0.5);
 }
 
-.fire-upvoted{
+.fire-upvoted {
     color: #f6620c !important;
 }
 
 .loader {
-  width: 30px;
-  padding: 8px;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: #20A7E8;
-  --_m: 
-    conic-gradient(#0000 10%,#000),
-    linear-gradient(#000 0 0) content-box;
-  -webkit-mask: var(--_m);
-          mask: var(--_m);
-  -webkit-mask-composite: source-out;
-          mask-composite: subtract;
-  animation: l3 1s infinite linear;
+    width: 30px;
+    padding: 8px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #20A7E8;
+    --_m: 
+        conic-gradient(#0000 10%, #000),
+        linear-gradient(#000 0 0) content-box;
+    -webkit-mask: var(--_m);
+            mask: var(--_m);
+    -webkit-mask-composite: source-out;
+            mask-composite: subtract;
+    animation: l3 1s infinite linear;
 }
-@keyframes l3 {to{transform: rotate(1turn)}}
+
+@keyframes l3 {
+    to {
+        transform: rotate(1turn);
+    }
+}
+
 </style>

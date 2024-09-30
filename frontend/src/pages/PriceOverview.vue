@@ -55,24 +55,54 @@ export default {
 </script>
 
 <style scoped>
-.wrapper{
+.wrapper {
     padding: 3em 5em;
     background: #f3f3f3;
     min-height: calc(100vh - 4.5em);
-    height: calc(100% - 4.5em);
     box-sizing: border-box;
 }
-.prices{
+
+/* 針對小螢幕調整 wrapper 的內邊距，避免過大的邊距 */
+@media (max-width: 768px) {
+    .wrapper {
+        padding: 1em 1.5em;
+    }
+}
+
+/* 調整 .prices 的排版，確保在小螢幕上正常顯示 */
+.prices {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+    gap: 1em; /* 使用 gap 來確保項目之間的間距 */
 }
-.category{
+
+/* 根據螢幕大小調整 .category 的大小和排列方式 */
+.category {
     margin: 1em;
     flex-grow: 1;
+    flex-basis: calc(33.33% - 2em); /* 大螢幕時，三欄佈局，每欄佔三分之一 */
 }
-.subtitle{
+
+/* 針對中等螢幕的調整，兩欄佈局 */
+@media (max-width: 992px) {
+    .category {
+        flex-basis: calc(50% - 2em); /* 每欄佔二分之一 */
+    }
+}
+
+/* 針對小螢幕的調整，單欄佈局 */
+@media (max-width: 768px) {
+    .category {
+        flex-basis: calc(100% - 2em); /* 每欄佔全寬 */
+        margin: 0.5em 0; /* 減少間距 */
+    }
+}
+
+.subtitle {
     font-weight: normal;
-    margin-top: .5em;
+    margin-top: 0.5em;
+    text-align: center;
 }
+
 </style>

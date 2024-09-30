@@ -6,7 +6,7 @@
                 {{ isMenuVisible ? '✕' : '☰' }} <!-- 根據 isMenuVisible 切換符號 -->
             </span>
         </div>
-        <ul class="options" v-show="isMenuVisible"> <!-- 使用 v-show 控制顯示 -->
+        <ul class="options" v-if="isMenuVisible"> <!-- 使用 v-if 控制顯示 -->
             <li><RouterLink to="/overview">物價概覽</RouterLink></li>
             <li><RouterLink to="/trending">物價趨勢</RouterLink></li>
             <li><RouterLink to="/news">相關新聞</RouterLink></li>
@@ -23,7 +23,7 @@ export default {
     name: 'NavBar',
     data() {
         return {
-            isMenuVisible: true // 控制菜單的顯示與隱藏
+            isMenuVisible: false // 預設隱藏菜單
         };
     },
     computed: {
@@ -43,10 +43,25 @@ export default {
         },
         toggleMenu() {
             this.isMenuVisible = !this.isMenuVisible; // 切換菜單顯示狀態
+        },
+        handleResize() {
+            if (window.innerWidth > 768) {
+                this.isMenuVisible = true; // 大於768px時自動顯示
+            } else if (!this.isMenuVisible) {
+                this.isMenuVisible = false; // 小於768px時維持使用者的選擇
+            }
         }
+    },
+    mounted() {
+        window.addEventListener('resize', this.handleResize); // 監聽窗口大小變化
+        this.handleResize(); // 初始化菜單顯示狀態
+    },
+    beforeUnmount() {
+        window.removeEventListener('resize', this.handleResize); // 清除事件監聽
     }
 };
 </script>
+
 <style scoped>
 .navbar {
     display: flex;

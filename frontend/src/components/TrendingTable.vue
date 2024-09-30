@@ -95,6 +95,7 @@ export default {
 <style scoped>
 .trending-table {
     margin-top: 2em;
+    overflow-x: auto; /* 加入橫向滾動 */
 }
 
 table {
@@ -107,5 +108,25 @@ td {
     border: 1px solid #ccc;
     padding: 0.5em;
     text-align: center;
+    font-size: 1em;
 }
+
+
+/* 針對小螢幕調整 */
+@media (max-width: 768px) {
+    th,
+    td {
+        padding: 0.3em;
+        font-size: 0.8em; /* 減少字體大小 */
+    }
+
+    .trending-table {
+        overflow-x: scroll; /* 小螢幕時允許橫向滾動 */
+    }
+
+    table {
+        min-width: 600px; /* 為了保持橫向滾動，設置最小寬度 */
+    }
+}
+
 </style>
