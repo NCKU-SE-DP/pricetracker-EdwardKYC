@@ -136,7 +136,7 @@ export default {
     }
 
     .title > a {
-        font-size: 1.6em; /* 放大標題字體大小 */
+        font-size: 1.2em; /* 放大標題字體大小 */
         padding: 0.5em 0;
     }
 

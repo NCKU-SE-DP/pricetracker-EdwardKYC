@@ -42,73 +42,107 @@ export default {
 
 <style scoped>
 .login-page {
-    padding: 3em 5em;
+    padding: 1% 2%; /* 使用百分比來設置內邊距 */
     background: #f3f3f3;
     min-height: calc(100vh - 4.5em);
     height: calc(100% - 4.5em);
     box-sizing: border-box;
 }
 
-.error{
+.error {
     color: red;
 }
 
 .container {
     margin-top: 2em;
     background: #fff;
-    padding: 2em;
+    padding: 4%; /* 使用百分比來設置內部填充 */
     border-radius: 1em;
     box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    max-width: 100%; /* 容器寬度設置為最大 100% */
+    box-sizing: border-box;
 }
 
-form{
+form {
     display: flex;
     flex-direction: column;
 }
 
-form > input{
-    margin: .25em 0;
-    padding: .5em 1em;
+form > input {
+    margin: 1em 0; /* 使用比例的間距 */
+    padding: 1em 2em; /* 調整內部填充為比例 */
     font-size: 1.2em;
     border: 1px solid #ccc;
-    border-radius: .5em;
+    border-radius: 0.5em;
 }
 
-.ops{
-    margin-top: .5em;
+.ops {
+    margin-top: 1em;
     display: flex;
     justify-content: center;
+    flex-wrap: wrap; /* 允許按鈕換行，以便在小螢幕下排列 */
+    gap: 1em; /* 使用 gap 來設置按鈕間距 */
 }
 
-.ops > button{
-    padding: .5em 1em;
-    margin: 0 .5em;
+.ops > button {
+    padding: 1em 2em; /* 使用百分比來設置按鈕大小 */
     font-size: 1.2em;
     border: none;
-    border-radius: .5em;
+    border-radius: 0.5em;
     cursor: pointer;
+    max-width: 100%; /* 防止按鈕超出容器寬度 */
+    width: auto; /* 自適應寬度 */
 }
 
-#register{
+#register {
     background-color: #F3F3F3;
     border: 1px solid #ccc;
 }
 
-#register > a{
+#register > a {
     text-decoration: none;
     color: #000;
 }
 
-#register:hover{
+#register:hover {
     background-color: #e8e8e8;
 }
 
-#login{
+#login {
     background-color: #5bc0de;
     color: #fff;
 }
 
-#login:hover{
+#login:hover {
     background-color: #46b8da;
 }
+
+/* 小螢幕的調整 */
+@media (max-width: 768px) {
+    .login-page {
+        padding: 3% 5%; /* 小螢幕上減少邊距 */
+    }
+
+    .container {
+        padding: 4%; /* 在小螢幕上減少內部填充 */
+        max-width: 100%; /* 小螢幕時佔據全寬 */
+    }
+
+    form > input {
+        font-size: 1em; /* 在小螢幕上減小字體大小 */
+        padding: 0.8em 1.5em; /* 調整填充大小 */
+    }
+
+    .ops {
+        flex-direction: column; /* 將按鈕改為縱向排列以適應小螢幕 */
+    }
+
+    .ops > button {
+        font-size: 1em; /* 調整按鈕字體大小 */
+        padding: 0.8em 1.5em; /* 調整按鈕大小 */
+        width: 100%; /* 按鈕在小螢幕上佔據全寬 */
+        max-width: 100%; /* 防止超出容器 */
+    }
+}
+
 </style>

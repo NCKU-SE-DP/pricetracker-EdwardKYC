@@ -74,29 +74,36 @@ export default {
 
 <style scoped>
 .wrapper {
-    padding: 3em 5em;
+    padding: 3% 5%;
     background: #f3f3f3;
     min-height: calc(100vh - 4.5em);
     height: calc(100% - 4.5em);
     box-sizing: border-box;
     width: 100%;
+    overflow-x: hidden; /* 預設情況下不允許橫向滾動 */
 }
+
 .content {
     background-color: white;
     margin-top: 1em;
     border-radius: 1em;
-    padding: 1em 3em;
+    padding: 1% 3%;
+    width: 100%; /* 在大螢幕時，內容寬度佔據 100% */
+    box-sizing: border-box;
 }
-.news-item{
+
+.news-item {
     border-bottom: #aaaaaa 1px solid;
 }
-.news-item:last-child{
+
+.news-item:last-child {
     border-bottom: none;
 }
-.search-bar{
+
+.search-bar {
     background-color: white;
     display: inline-flex;
-    border-radius: .5em;
+    border-radius: 0.5em;
     box-sizing: border-box;
     text-align: start;
     margin-top: 1em;
@@ -104,20 +111,36 @@ export default {
     width: 80%;
 }
 
-.search-bar input{
+.search-bar input {
     border: none;
     outline: none;
-    font-size: .9em;
+    font-size: 0.9em;
     box-sizing: border-box;
     flex-grow: 1;
     margin-right: 1em;
 }
 
-.search-bar i{
+.search-bar i {
     cursor: pointer;
 }
 
-.search-bar button:hover{
+.search-bar button:hover {
     cursor: pointer;
+}
+
+
+/* 小螢幕的調整 */
+@media (max-width: 768px) {
+    .wrapper {
+        width: 100%; /* 確保 wrapper 寬度為100%，適應小螢幕 */
+        padding: 2% 3%; /* 減少邊距 */
+        overflow-x: auto; /* 小螢幕上允許橫向滾動 */
+    }
+
+    .content {
+        width: 1200px; /* 小螢幕時固定寬度為1200px，超出視窗寬度 */
+        overflow-x: auto; /* 允許 content 本身出現滾動 */
+        padding: 1em 1.5em; /* 調整內邊距 */
+    }
 }
 </style>

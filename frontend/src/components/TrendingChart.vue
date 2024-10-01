@@ -94,30 +94,36 @@ export default {
     }
 };
 </script>
-
 <style scoped>
+
 .chart-container {
     position: relative;
     margin: auto;
     height: 30vh;
     width: 100%; /* 設置容器寬度為 100% */
-    overflow-x: auto; /* 添加橫向滾動 */
+    overflow-x: hidden; /* 預設大於768px不顯示橫向滾動 */
+    overflow-y: hidden; /* 垂直方向不顯示滾動條 */
+    white-space: nowrap; /* 確保容器內的元素不會自動換行 */
 }
 
 canvas {
-    width: 150%; /* 設置 canvas 的寬度大於容器寬度 */
-    max-width: none; /* 確保 canvas 不會縮放到容器大小 */
-    display: block; /* 使 canvas 成為塊級元素，防止折行 */
+    width: 100%; /* 大於 768px 時，圖表隨容器寬度縮放 */
+    max-width: 100%; /* 確保 canvas 不會超過容器寬度 */
+    height: auto; /* 保持高度與寬度比例一致 */
 }
 
 /* 小螢幕的調整 */
 @media (max-width: 768px) {
     .chart-container {
-        height: 50vh; /* 在小螢幕上增加高度 */
+        height: 50vh; /* 小螢幕上增加高度，確保圖表顯示區域足夠 */
+        overflow-x: scroll; /* 小螢幕上允許橫向滾動 */
     }
 
     canvas {
-        width: 300%; /* 在小螢幕上增加 canvas 寬度，確保有足夠的內容讓滑動生效 */
+        width: 1200px; /* 設定圖表在小螢幕上的固定寬度 */
+        min-width: 1200px; /* 確保 canvas 不會縮小到小於 1200px */
+        height: auto; /* 確保寬度變化時高度自動調整，保持比例 */
     }
 }
+
 </style>
