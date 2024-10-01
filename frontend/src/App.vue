@@ -27,7 +27,9 @@ export default {
   position: fixed;
   top: 0;
 }
-.render{
+.render {
   margin-top: 4.5em;
+  padding: 5% 5%; /* 將 padding 改為比例 */
 }
+
 </style>

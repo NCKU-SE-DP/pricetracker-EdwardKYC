@@ -65,7 +65,6 @@ export default {
     }
 };
 </script>
-
 <style scoped>
 .error {
     color: red;
@@ -93,6 +92,16 @@ h2{
 .category-price-wrapper{
     background-color: white;
     border-radius: 1em;
-    padding: 2em;
+    padding: 2em; /* 大螢幕的內邊距 */
+}
+
+/* 針對小螢幕調整 padding，按比例縮小 */
+@media (max-width: 768px) {
+    .category-price-wrapper {
+        padding: calc(2em * 0.5); /* 按 50% 的比例縮小內邊距 */
+    }
+    h2 {
+        font-size: calc(1.5em * 0.9); /* 字體按比例縮小 */
+    }
 }
 </style>

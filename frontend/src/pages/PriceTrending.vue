@@ -85,24 +85,28 @@ export default {
     width: 100%;
 }
 
+/* 調整內容容器，使其在小螢幕上自適應 */
 .content {
     margin-top: 2em;
     background-color: #fff;
     border-radius: 1em;
     padding: 2em;
     width: 100%;
+    max-width: 100%;
 }
 
-
+/* 選擇器在小螢幕上垂直排列 */
 .selects {
     display: flex;
     justify-content: flex-start;
+    flex-wrap: wrap;
 }
 
 .selects>select {
     padding: .5em;
     font-size: 1.1em;
     margin-right: 1em;
+    margin-bottom: 1em; /* 增加垂直間距 */
     border-radius: .5em;
     border: 1px solid #ccc;
     outline: none;
@@ -110,9 +114,33 @@ export default {
     appearance: auto !important;
 }
 
+/* 調整圖表和表格容器的顯示方式，使其在小螢幕上堆疊 */
 .visualize > * {
     flex: 1 1 50%;
     box-sizing: border-box;
     padding: 1em;
 }
+
+/* 小螢幕響應式設計 */
+@media (max-width: 768px) {
+    .wrapper {
+        padding: 1.5em 2em; /* 調整 padding 以適應小螢幕 */
+    }
+
+    .selects {
+        flex-direction: column; /* 垂直排列選擇器 */
+        align-items: flex-start; /* 靠左對齊 */
+    }
+
+    .selects > select {
+        width: 100%; /* 讓選擇器在小螢幕上填滿寬度 */
+        margin-right: 0;
+    }
+
+    .visualize > * {
+        flex: 1 1 100%; /* 在小螢幕上每個元素都佔據 100% 寬度 */
+        padding: 0.5em 0; /* 調整 padding 讓內容更緊湊 */
+    }
+}
+
 </style>
