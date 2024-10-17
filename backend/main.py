@@ -34,12 +34,13 @@ user_news_association_table = Table(
 
 # from pydantic import BaseModel
 
-
+MaxUsernameSize = 50 
+MaxPasswordSize = 200
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    username = Column(String(50), unique=True, nullable=False)
-    hashed_password = Column(String(200), nullable=False)
+    username = Column(String(MaxUsernameSize), unique=True, nullable=False)
+    hashed_password = Column(String(MaxPasswordSize), nullable=False)
     upvoted_news = relationship(
         "NewsArticle",
         secondary=user_news_association_table,
@@ -49,7 +50,7 @@ class User(Base):
 
 class NewsArticle(Base):
     __tablename__ = "news_articles"
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)  
     url = Column(String, unique=True, nullable=False)
     title = Column(String, nullable=False)
     time = Column(String, nullable=False)
