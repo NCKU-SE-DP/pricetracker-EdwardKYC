@@ -1,14 +1,12 @@
 from pydantic_settings import BaseSettings
 
-class AuthConfig(BaseSettings):
+class NewsConfig(BaseSettings):
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
-        env_prefix = "JWT_"
+        env_prefix = "NEWS_"
         extra = "ignore"
+    
+    UDN_API_URL: str
 
-    SECRET_KEY: str
-    ALGORITHM: str
-    AUTH_TOKEN_URL: str
-
-auth_config = AuthConfig()
+news_config = NewsConfig()

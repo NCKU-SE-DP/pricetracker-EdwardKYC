@@ -1,14 +1,12 @@
 from pydantic_settings import BaseSettings
 
-class AuthConfig(BaseSettings):
+class PricingConfig(BaseSettings):
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
-        env_prefix = "JWT_"
+        env_prefix = "PRICING_"
         extra = "ignore"
 
-    SECRET_KEY: str
-    ALGORITHM: str
-    AUTH_TOKEN_URL: str
-
-auth_config = AuthConfig()
+    NECESSITIES_PRICE_API_URL: str 
+    
+pricing_config = PricingConfig()
