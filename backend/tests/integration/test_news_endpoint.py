@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 import json
 from jose import jwt
 from src.main import app, NewsArticle
-from src.auth.service import pwd_context
+from src.auth.service import pwd_context 
 from src.auth.models import User
 from src.news.schemas import NewsSumaryRequestSchema, PromptRequest
 from src.database import Base, session_opener, user_news_association_table
