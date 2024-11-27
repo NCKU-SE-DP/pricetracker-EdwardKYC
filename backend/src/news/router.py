@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-
+from ..crawler.udn_crawler import UDNCrawler    
 from ..auth.service import authenticate_user_token
 from ..database import session_opener
 from .models import NewsArticle
@@ -67,15 +67,16 @@ async def search_news_articles(request: PromptRequest):
     prompt = request.prompt
     news_list = []
     keywords = extract_search_keywords(prompt)
-    news_items = fetch_news_articles_by_keyword(keywords, is_initial=False)
-    for news in news_items:
+    crawler = UDNCrawler(timeout=10)
+    headlines = crawler.get_headline(keywords, page=1)
+    for headline in headlines:
         try:
-            detailed_news = process_news_item(news)
-            detailed_news["content"] = " ".join(detailed_news["content"])
-            detailed_news["id"] = next(article_id_counter)
+            detailed_news = crawler.parse(headline.url)  # Parse the detailed article
+            detailed_news["content"] = detailed_news["content"]  # Ensure content is string
+            detailed_news["id"] = next(article_id_counter)  # Assign unique ID
             news_list.append(detailed_news)
         except Exception as e:
-            print(e)
+            print(f"Error processing article {headline.url}: {e}")
     return sorted(news_list, key=lambda x: x["time"], reverse=True)
 
 @router.post("/news_summary")

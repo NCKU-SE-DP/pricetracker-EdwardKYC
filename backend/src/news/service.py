@@ -4,8 +4,7 @@ from urllib.parse import quote
 import json
 from sqlalchemy.orm import Session
 from sqlalchemy import select, insert, delete
-
-from ..database import Session
+from ..crawler.udn_crawler import UDNCrawler    
 from .models import NewsArticle
 from ..auth.models import user_news_association_table
 from .config import news_config
@@ -22,7 +21,7 @@ def add_news_article(news_article_data):
     :param news_article_data: Dictionary containing article information.
     :return: None
     """
-    session = Session()
+    session = Session() 
     session.add(NewsArticle(
         url=news_article_data["url"],
         title=news_article_data["title"],
@@ -42,29 +41,10 @@ def fetch_news_articles_by_keyword(search_term, is_initial=False):
     :param is_initial: If True, fetches multiple pages of news; otherwise, fetches only the first page.
     :return: List of news articles.
     """
-    all_news_data = []
-    
-    if is_initial:
-        for page in range(1, 10):
-            request_params = {
-                "page": page,
-                "id": f"search:{quote(search_term)}",
-                "channelId": 2,
-                "type": "searchword",
-            }
-            response = requests.get(news_config.UDN_API_URL, params=request_params)
-            all_news_data.extend(response.json()["lists"]) 
-    else:
-        request_params = {
-            "page": 1,
-            "id": f"search:{quote(search_term)}",
-            "channelId": 2,
-            "type": "searchword",
-        }
-        response = requests.get(news_config.UDN_API_URL, params=request_params)
-        all_news_data = response.json()["lists"]
-
-    return all_news_data
+    crawler = UDNCrawler(timeout=10)
+    page_range = (1, 10) if is_initial else 1
+    headlines = crawler.get_headline(search_term, page=page_range)
+    return [headline._asdict() for headline in headlines]
 
 def fetch_and_process_news(is_initial=False):
     """

@@ -1,7 +1,11 @@
 class DomainMismatchException(Exception):
-    """
-    Raised when the given URL does not belong to the expected domain or its child URLs.
-    """
+    """Exception raised for URLs whose domain does not match the news website's domain."""
 
-    def __init__(self, url: str):
-        super().__init__(f"The URL {url} does not match the expected domain.")
+    def __init__(
+        self,
+        url: str,
+        message: str = "URL's domain does not match the news website's domain",
+    ):
+        self.url = url
+        self.message = message
+        super().__init__(self.message)

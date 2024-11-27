@@ -68,4 +68,6 @@ class NewsCrawlerBase(metaclass=abc.ABCMeta):
     def _is_valid_url(self, url: AnyHttpUrl | str) -> bool:
         main_domain = tldextract.extract(self.news_website_url).registered_domain
         url_domain = tldextract.extract(url).registered_domain
+        
         return url_domain == main_domain
+    
