@@ -5,14 +5,27 @@ import json
 from sqlalchemy.orm import Session
 from sqlalchemy import select, insert, delete
 from ..crawler.udn_crawler import UDNCrawler    
+from ..crawler.crawler_base import Headline 
 from .models import NewsArticle
 from ..auth.models import user_news_association_table
 from .config import news_config
 from ..ai_service.service import relevance_check, generate_summary
 from .utils import process_news_item, parse_summary_result
-
+from ..database import SessionLocal
 # Unique ID counter for generating temporary article IDs in memory.
 article_id_counter = itertools.count(start=1000000)
+
+
+def add_news_article(news_article_data):
+    """
+    Adds a news article to the database.
+
+    :param news_article_data: Dictionary containing article information.
+    :return: None
+    """
+    crawler = UDNCrawler()
+    session = SessionLocal()
+    crawler.save(news=news_article_data, db=session)
 
 def add_news_article(news_article_data):
     """

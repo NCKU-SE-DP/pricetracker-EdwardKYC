@@ -36,6 +36,7 @@ from ..news.config import news_config
 from ..news.models import NewsArticle
 from requests import Response
 from bs4 import BeautifulSoup
+from requests.exceptions import RequestException
 from sqlalchemy.orm import Session
 from .crawler_base import NewsCrawlerBase, Headline, News, NewsWithSummary
 from urllib.parse import quote
@@ -98,9 +99,13 @@ class UDNCrawler(NewsCrawlerBase):
         }
         return request_params
 
-    def _perform_request(self, url: str | None = None, request_params: dict | None = None) -> Response:
-        response = requests.get(url, params=request_params)
-        return response
+    def _perform_request(self, url: str | None = None, params: dict | None = None) -> Response:
+        try:
+            response = requests.get(url, params=params)
+            response.raise_for_status()
+            return response
+        except RequestException as e:
+            raise RuntimeError(f"Failed to perform request to {url}: {e}")
 
     @staticmethod
     def _parse_headlines(response: Response) -> list[Headline]:
@@ -144,15 +149,20 @@ class UDNCrawler(NewsCrawlerBase):
             raise
 
     def save(self, news: NewsWithSummary, db: Session):
-        
-        new_article = NewsArticle (
-            url = news.url,
-            title = news.title,
-            time = news.time,
-            content = news.content,
-            summary = news.summary,
-            reason = news.reason,
+        existing_news = db.query(NewsArticle).filter_by(url=news.url).first()
+        if existing_news:
+            print(f"News with URL {news.url} already exists. Skipping save.")
+            return
+
+        new_article = NewsArticle(
+            url=news.url,
+            title=news.title,
+            time=news.time,
+            content=news.content,
+            summary=news.summary,
+            reason=news.reason,
         )
+
         db.add(new_article)
         self._commit_changes(db)
             
