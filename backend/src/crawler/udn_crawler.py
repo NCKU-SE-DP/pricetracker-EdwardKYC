@@ -69,30 +69,21 @@ class UDNCrawler(NewsCrawlerBase):
         # If 'page' is a tuple, unpack it and create a range representing those pages (inclusive).
         # If 'page' is an int, create a list containing only that single page number.
         # page_range = range(*page) if isinstance(page, tuple) else [page]
-        if isinstance(page, tuple):
-            start, end = page
-            page_range = range(start, end + 1)  # Inclusive range
-        else:
-            page_range = [page]
+        page_range = range(page[0], page[1] + 1) if isinstance(page, tuple) else [page]
 
         headlines = []
-        for p in page_range:
-            headlines.extend(self._fetch_news(p, search_term))
+        for page_num in page_range:
+            headlines.extend(self._fetch_news(page=page_num, search_term=search_term))
         return headlines
 
     def _fetch_news(self, page: int, search_term: str) -> list[Headline]:
         params = self._create_search_params(page, search_term)
         response = self._perform_request(params=params)
-
-        if response.status_code == 200:
-            return self._parse_headlines(response)
-        else:
-            # Log the issue and return an empty list
-            return []
+        return self._parse_headlines(response)
 
     def _create_search_params(self, page: int, search_term: str) -> dict:
         request_params = {
-            "page": 1,
+            "page": page,
             "id": f"search:{quote(search_term)}",
             "channelId": 2,
             "type": "searchword",
@@ -102,18 +93,16 @@ class UDNCrawler(NewsCrawlerBase):
     def _perform_request(self, url: str | None = None, params: dict | None = None) -> Response:
         try:
             response = requests.get(url, params=params)
-            response.raise_for_status()
             return response
         except RequestException as e:
             raise RuntimeError(f"Failed to perform request to {url}: {e}")
 
     @staticmethod
     def _parse_headlines(response: Response) -> list[Headline]:
-        all_news_data = response.json()["lists"]
         try:
             data = response.json()
             headlines = []
-            for item in data.get("lists", []):
+            for item in data["lists"]:
                 headlines.append(Headline(title=item["title"], url=item["titleLink"]))
             return headlines
         except (KeyError, ValueError) as e:
@@ -152,7 +141,7 @@ class UDNCrawler(NewsCrawlerBase):
         existing_news = db.query(NewsArticle).filter_by(url=news.url).first()
         if existing_news:
             print(f"News with URL {news.url} already exists. Skipping save.")
-            return
+            return existing_news  # 返回现有记录，方便调用者处理
 
         new_article = NewsArticle(
             url=news.url,
@@ -164,13 +153,19 @@ class UDNCrawler(NewsCrawlerBase):
         )
 
         db.add(new_article)
-        self._commit_changes(db)
-            
+        try:
+            self._commit_changes(db)
+            return new_article  # 返回成功保存的对象
+        except Exception as e:
+            print(f"Error occurred while saving news: {e}")
+            raise  # 抛出异常以便调用方处理
+        finally:
+            db.close()  # 确保连接始终被关闭
 
     @staticmethod
     def _commit_changes(db: Session):
         try:
             db.commit()
-        except:
-            db.rollback()
-        db.close()
+        except Exception as e:
+            db.rollback()  # 回滚事务以防止锁定数据库
+            raise e  # 抛出异常以便上层捕获

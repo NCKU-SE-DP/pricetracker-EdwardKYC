@@ -44,5 +44,11 @@ def parse_summary_result(result):
         except json.JSONDecodeError:
             return response_data
     return response_data
-'''
-'''
+
+def convert_news_to_dict(news):
+    return {
+        "url": news.url,
+        "title": news.title,
+        "time": news.time,
+        "content": news.content,
+    }

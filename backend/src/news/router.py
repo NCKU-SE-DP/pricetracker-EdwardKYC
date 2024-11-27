@@ -12,7 +12,9 @@ from .service import (
     get_article_upvote_details,
     toggle_upvote,
 )
-from .utils import process_news_item, parse_summary_result
+from .utils import process_news_item, parse_summary_result , convert_news_to_dict
+
+
 
 router = APIRouter(
     prefix="/news",
@@ -67,16 +69,16 @@ async def search_news_articles(request: PromptRequest):
     prompt = request.prompt
     news_list = []
     keywords = extract_search_keywords(prompt)
-    crawler = UDNCrawler(timeout=10)
-    headlines = crawler.get_headline(keywords, page=1)
-    for headline in headlines:
+    crawler = UDNCrawler()
+    news_items = fetch_news_articles_by_keyword(keywords, is_initial=False)
+    for news in news_items:
         try:
-            detailed_news = crawler.parse(headline.url)  # Parse the detailed article
-            detailed_news["content"] = detailed_news["content"]  # Ensure content is string
-            detailed_news["id"] = next(article_id_counter)  # Assign unique ID
+            abc = crawler.parse(news.url)
+            detailed_news = convert_news_to_dict(crawler.parse(news.url))
+            detailed_news["id"] = next(article_id_counter)
             news_list.append(detailed_news)
         except Exception as e:
-            print(f"Error processing article {headline.url}: {e}")
+            print(e)
     return sorted(news_list, key=lambda x: x["time"], reverse=True)
 
 @router.post("/news_summary")

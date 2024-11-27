@@ -15,7 +15,7 @@ from ..database import SessionLocal
 # Unique ID counter for generating temporary article IDs in memory.
 article_id_counter = itertools.count(start=1000000)
 
-
+crawler = UDNCrawler()
 def add_news_article(news_article_data):
     """
     Adds a news article to the database.
@@ -23,7 +23,7 @@ def add_news_article(news_article_data):
     :param news_article_data: Dictionary containing article information.
     :return: None
     """
-    crawler = UDNCrawler()
+    
     session = SessionLocal()
     crawler.save(news=news_article_data, db=session)
 
@@ -54,11 +54,11 @@ def fetch_news_articles_by_keyword(search_term, is_initial=False):
     :param is_initial: If True, fetches multiple pages of news; otherwise, fetches only the first page.
     :return: List of news articles.
     """
-    crawler = UDNCrawler(timeout=10)
-    page_range = (1, 10) if is_initial else 1
-    headlines = crawler.get_headline(search_term, page=page_range)
-    return [headline._asdict() for headline in headlines]
-
+    if is_initial:
+        return crawler.startup(search_term=search_term)
+    else:
+        return crawler.get_headline(search_term=search_term, page=1)
+    
 def fetch_and_process_news(is_initial=False):
     """
     Fetches news articles and processes them to assess relevance and generate summaries.
