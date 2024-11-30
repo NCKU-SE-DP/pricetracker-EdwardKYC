@@ -1,21 +1,5 @@
 import abc
-from pydantic import BaseModel, Field
-
-
-class MessagePassingInterfaceExample(BaseModel):
-    """
-    Example of a message interface for interaction with LLM clients.
-    """
-    role: str = Field(
-        default=...,
-        example="user",
-        description="The role of the message sender, such as 'user', 'system', or 'assistant'."
-    )
-    content: str = Field(
-        default=...,
-        example="Hello, how can I assist you?",
-        description="The content of the message to be passed to the LLM."
-    )   
+from typing import List, Dict
 
 
 class LLMClientBase(metaclass=abc.ABCMeta):
@@ -23,6 +7,15 @@ class LLMClientBase(metaclass=abc.ABCMeta):
     Abstract base class for an LLM (Large Language Model) client.
     Defines the required interface for any LLM client implementation.
     """
+
+    @abc.abstractmethod
+    def evaluate_relevance(self, content: str) -> str:
+        """
+        Evaluates the relevance of the content.
+        :param content: The input text to evaluate.
+        :return: A string indicating the relevance ('high', 'medium', 'low').
+        """
+        pass
 
     @abc.abstractmethod
     def generate_summary(self, content: str) -> str:
@@ -44,10 +37,28 @@ class LLMClientBase(metaclass=abc.ABCMeta):
 
     @staticmethod
     @abc.abstractmethod
-    def _generate_text(messages: list[dict]) -> str:
+    def _generate_text(messages: List[Dict[str, str]]) -> str:
         """
         Sends a list of messages to the LLM and retrieves the generated text.
         :param messages: A list of messages to send to the LLM.
         :return: The text response from the LLM.
         """
         pass
+
+    @staticmethod
+    def validate_message_format(message: Dict[str, str]) -> bool:
+        """
+        Validates the format of a single message to ensure it conforms to the required structure.
+        :param message: A dictionary representing a single message.
+        :return: True if valid, False otherwise.
+        """
+        required_keys = {"role", "content"}
+        return all(key in message for key in required_keys) and isinstance(message["content"], str)
+
+    def validate_messages(self, messages: List[Dict[str, str]]) -> bool:
+        """
+        Validates a list of messages to ensure all conform to the required structure.
+        :param messages: A list of message dictionaries.
+        :return: True if all messages are valid, False otherwise.
+        """
+        return all(self.validate_message_format(message) for message in messages)

@@ -1,5 +1,5 @@
 from .base import LLMClientBase
-
+from typing import List, Dict
 
 class OpenAIClient(LLMClientBase):
     """
@@ -18,7 +18,7 @@ class OpenAIClient(LLMClientBase):
             },
             {"role": "user", "content": content}
         ]
-        return self._generate_text(messages)
+        return self._generate_text(messages=messages)
 
     def generate_summary(self, content: str) -> str:
         messages = [
@@ -28,7 +28,7 @@ class OpenAIClient(LLMClientBase):
             },
             {"role": "user", "content": content}
         ]
-        return self._generate_text(messages)
+        return self._generate_text(messages=messages)
 
     def extract_search_keywords(self, content: str) -> str:
         messages = [
@@ -38,10 +38,10 @@ class OpenAIClient(LLMClientBase):
             },
             {"role": "user", "content": content}
         ]
-        return self._generate_text(messages)
+        return self._generate_text(messages=messages)
 
     @staticmethod
-    def _generate_text(messages: list[dict]) -> str:
+    def _generate_text(messages: List[Dict[str, str]]) -> str:
         """
         Mock implementation of text generation for testing.
         In real use, this method should call the OpenAI API using the messages.
