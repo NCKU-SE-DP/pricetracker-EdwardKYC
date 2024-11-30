@@ -5,7 +5,8 @@ from ..auth.service import authenticate_user_token
 from ..database import session_opener
 from .models import NewsArticle
 from .schemas import PromptRequest, NewsSumaryRequestSchema
-from ..ai_service.service import generate_summary, extract_search_keywords
+from ..ai_service.openai_client import OpenAIClient
+from ..ai_service.config import AIConfig
 from .service import (
     article_id_counter,
     fetch_news_articles_by_keyword,
@@ -14,7 +15,7 @@ from .service import (
 )
 from .utils import process_news_item, parse_summary_result , convert_news_to_dict
 
-
+openai_client = OpenAIClient(api_key=AIConfig.OPEN_AI_KEY)
 
 router = APIRouter(
     prefix="/news",
@@ -68,7 +69,7 @@ def get_user_specific_news(
 async def search_news_articles(request: PromptRequest):
     prompt = request.prompt
     news_list = []
-    keywords = extract_search_keywords(prompt)
+    keywords = openai_client.extract_search_keywords(prompt)
     crawler = UDNCrawler()
     news_items = fetch_news_articles_by_keyword(keywords, is_initial=False)
     for news in news_items:
@@ -85,7 +86,7 @@ async def search_news_articles(request: PromptRequest):
 async def news_summary(
         payload: NewsSumaryRequestSchema, user=Depends(authenticate_user_token)
 ):
-    result = generate_summary(payload.content)
+    result = openai_client.generate_summary(payload.content)
     return parse_summary_result(result)
 
 @router.post("/{article_id}/upvote")
