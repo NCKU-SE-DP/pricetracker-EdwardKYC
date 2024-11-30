@@ -1,7 +1,7 @@
 import unittest
 import os
 from unittest.mock import patch
-from src.services.openai_client import OpenAIClient
+from src.ai_service.openai_client import OpenAIClient
 
 # 除非確認要使用真實的API進行測試(當然會因此擁有額外的開銷)，否則將RUN_REAL_API_TESTS設置為False
 RUN_REAL_API_TESTS = os.getenv("RUN_REAL_API_TESTS", "false").lower() == "true"
