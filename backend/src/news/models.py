@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Text
 from sqlalchemy.orm import relationship
-
 from ..database import (Base, user_news_association_table)
+from ..auth.models import User
 
 class NewsArticle(Base):
     __tablename__ = "news_articles"

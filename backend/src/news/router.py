@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-
+from ..crawler.udn_crawler import UDNCrawler    
 from ..auth.service import authenticate_user_token
 from ..database import session_opener
 from .models import NewsArticle
@@ -12,7 +12,9 @@ from .service import (
     get_article_upvote_details,
     toggle_upvote,
 )
-from .utils import process_news_item, parse_summary_result
+from .utils import process_news_item, parse_summary_result , convert_news_to_dict
+
+
 
 router = APIRouter(
     prefix="/news",
@@ -67,11 +69,12 @@ async def search_news_articles(request: PromptRequest):
     prompt = request.prompt
     news_list = []
     keywords = extract_search_keywords(prompt)
+    crawler = UDNCrawler()
     news_items = fetch_news_articles_by_keyword(keywords, is_initial=False)
     for news in news_items:
         try:
-            detailed_news = process_news_item(news)
-            detailed_news["content"] = " ".join(detailed_news["content"])
+            abc = crawler.parse(news.url)
+            detailed_news = convert_news_to_dict(crawler.parse(news.url))
             detailed_news["id"] = next(article_id_counter)
             news_list.append(detailed_news)
         except Exception as e:

@@ -4,16 +4,28 @@ from urllib.parse import quote
 import json
 from sqlalchemy.orm import Session
 from sqlalchemy import select, insert, delete
-
-from ..database import Session
+from ..crawler.udn_crawler import UDNCrawler    
+from ..crawler.crawler_base import Headline 
 from .models import NewsArticle
 from ..auth.models import user_news_association_table
 from .config import news_config
 from ..ai_service.service import relevance_check, generate_summary
 from .utils import process_news_item, parse_summary_result
-
+from ..database import SessionLocal
 # Unique ID counter for generating temporary article IDs in memory.
 article_id_counter = itertools.count(start=1000000)
+
+crawler = UDNCrawler()
+def add_news_article(news_article_data):
+    """
+    Adds a news article to the database.
+
+    :param news_article_data: Dictionary containing article information.
+    :return: None
+    """
+    
+    session = SessionLocal()
+    crawler.save(news=news_article_data, db=session)
 
 def add_news_article(news_article_data):
     """
@@ -22,7 +34,7 @@ def add_news_article(news_article_data):
     :param news_article_data: Dictionary containing article information.
     :return: None
     """
-    session = Session()
+    session = Session() 
     session.add(NewsArticle(
         url=news_article_data["url"],
         title=news_article_data["title"],
@@ -42,30 +54,11 @@ def fetch_news_articles_by_keyword(search_term, is_initial=False):
     :param is_initial: If True, fetches multiple pages of news; otherwise, fetches only the first page.
     :return: List of news articles.
     """
-    all_news_data = []
-    
     if is_initial:
-        for page in range(1, 10):
-            request_params = {
-                "page": page,
-                "id": f"search:{quote(search_term)}",
-                "channelId": 2,
-                "type": "searchword",
-            }
-            response = requests.get(news_config.UDN_API_URL, params=request_params)
-            all_news_data.extend(response.json()["lists"]) 
+        return crawler.startup(search_term=search_term)
     else:
-        request_params = {
-            "page": 1,
-            "id": f"search:{quote(search_term)}",
-            "channelId": 2,
-            "type": "searchword",
-        }
-        response = requests.get(news_config.UDN_API_URL, params=request_params)
-        all_news_data = response.json()["lists"]
-
-    return all_news_data
-
+        return crawler.get_headline(search_term=search_term, page=1)
+    
 def fetch_and_process_news(is_initial=False):
     """
     Fetches news articles and processes them to assess relevance and generate summaries.
