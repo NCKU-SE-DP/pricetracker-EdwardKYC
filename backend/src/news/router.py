@@ -6,7 +6,7 @@ from ..database import session_opener
 from .models import NewsArticle
 from .schemas import PromptRequest, NewsSumaryRequestSchema
 from ..ai_service.openai_client import OpenAIClient
-from ..ai_service.config import AIConfig
+from ..ai_service.config import ai_config
 from .service import (
     article_id_counter,
     fetch_news_articles_by_keyword,
@@ -15,7 +15,7 @@ from .service import (
 )
 from .utils import process_news_item, parse_summary_result , convert_news_to_dict
 
-openai_client = OpenAIClient(api_key=AIConfig.OPEN_AI_KEY)
+openai_client = OpenAIClient(_api_key=ai_config.OPEN_AI_KEY)
 
 router = APIRouter(
     prefix="/news",
