@@ -26,7 +26,6 @@ class LLMClientTemplate(ABC):
         self.model = model
         self.client = None
         self._initialize_client()  
-        self.ai = ai
 
     @abstractmethod
     def _initialize_client(self):
@@ -55,15 +54,14 @@ class LLMClientTemplate(ABC):
 
     def _generate_text(self, messages: List[Dict[str, str]]) -> str:       
         try:
-
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=messages,
-                temperature=0.75,
             )
+            print(f"@@@ {response}")
             return response.choices[0].message.content.strip()
         except Exception as e:
-            return f"Error: {str(e)}"
+            raise e
         
 #printf(f"@@@ , {response}")
 class MessagePassingInterface(BaseModel):

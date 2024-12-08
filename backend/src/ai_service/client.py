@@ -10,6 +10,7 @@ class OpenAIClient(LLMClientTemplate):
         self.client = ai.Client(config)
 
 class AnthropicClient(LLMClientTemplate):
+
     def __init__(self, api_key: str, model: str):
         super().__init__(api_key, model)
 
