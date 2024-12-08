@@ -1,7 +1,7 @@
 import unittest
 import os
 from unittest.mock import patch
-from src.ai_service.openai_client import OpenAIClient
+from src.ai_service.client import OpenAIClient
 
 # 除非確認要使用真實的API進行測試(當然會因此擁有額外的開銷)，否則將RUN_REAL_API_TESTS設置為False
 RUN_REAL_API_TESTS = os.getenv("RUN_REAL_API_TESTS", "false").lower() == "true"
@@ -11,9 +11,9 @@ class TestOpenAIClient(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         if RUN_REAL_API_TESTS:
-            self.client = OpenAIClient(_api_key=os.getenv("OPENAI_API_KEY"))
+            self.client = OpenAIClient(api_key=os.getenv("OPENAI_API_KEY") , model = os.getenv("OPENAI_MODEL"))
         else:
-            self.client = OpenAIClient(_api_key="fake_api_key")
+            self.client = OpenAIClient(api_key="fake_api_key", model="fake_model")
 
     @unittest.skipIf(not RUN_REAL_API_TESTS, "模擬 API 呼叫，跳過真實測試")
     def test_evaluate_relevance_real(self):
@@ -31,7 +31,7 @@ class TestOpenAIClient(unittest.TestCase):
         result = self.client.extract_search_keywords("這篇新聞提到食品價格的波動以及市場的供應鏈問題")
         self.assertGreater(len(result.split()), 0)
 
-    @patch('src.ai_service.openai_client.OpenAIClient._generate_text')
+    @patch('src.ai_service.client.OpenAIClient._generate_text')
     def test_evaluate_relevance(self, mock_generate_text):
         mock_generate_text.return_value = 'high'
 
@@ -49,7 +49,7 @@ class TestOpenAIClient(unittest.TestCase):
             ]
         )
 
-    @patch('src.ai_service.openai_client.OpenAIClient._generate_text')
+    @patch('src.ai_service.client.OpenAIClient._generate_text')
     def test_generate_summary(self, mock_generate_text):
         mock_generate_text.return_value = '{"影響": "影響描述", "原因": "原因描述"}'
 
@@ -57,7 +57,7 @@ class TestOpenAIClient(unittest.TestCase):
 
         self.assertEqual(result, '{"影響": "影響描述", "原因": "原因描述"}')
 
-        mock_generate_text.assert_called_once_with(
+        mock_generate_text.assert_called_once_with( 
             messages=[
                 {
                     "role": "system",
@@ -67,7 +67,7 @@ class TestOpenAIClient(unittest.TestCase):
             ]
         )
 
-    @patch('src.ai_service.openai_client.OpenAIClient._generate_text')
+    @patch('src.ai_service.client.OpenAIClient._generate_text')
     def test_extract_search_keywords(self, mock_generate_text):
         mock_generate_text.return_value = '食品 價格'
 

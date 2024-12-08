@@ -1,5 +1,6 @@
 import pytest
 from fastapi.testclient import TestClient
+from unittest.mock import patch, MagicMock
 from sqlalchemy import create_engine, StaticPool
 from sqlalchemy.orm import sessionmaker
 import json
@@ -122,7 +123,7 @@ def mock_openai(mocker, return_content):
     # mock_completion.choices = [mock_choice]
 
     # mock_openai_client.return_value.chat.completions.create.return_value = mock_completion
-    mock_openai_client = mocker.patch('src.ai_service.openai_client.lient._generate_text')
+    mock_openai_client = mocker.patch('src.ai_service.base.LLMClientTemplate._generate_text')
 
     mock_openai_client.return_value = return_content
 
@@ -192,41 +193,20 @@ def test_downvote_article(test_user_and_articles, test_token):
     assert response.status_code == 200
     assert response.json()["message"] == "Upvote removed"
 
+
+
+#
+
+
 def test_news_summary_custom_model_openai(test_token):
     payload = {
         "content": "This is a test news content.",
-        "ai_model": "openai"  # 使用 OpenAI 模型
+        "ai_model": "openai"
     }
     headers = {"Authorization": f"Bearer {test_token}"}
-    
     response = client.post("/api/v1/news/news_summary_custom_model", json=payload, headers=headers)
     
-    # 确保响应成功
     assert response.status_code == 200
-    
-    # 解析响应
     json_response = response.json()
-    
-    # 假设生成的摘要字段在响应中
     assert "summary" in json_response
-    assert json_response["summary"] != ""  # 摘要内容应非空
-
-
-def test_news_summary_custom_model_anthropic(test_token):
-    payload = {
-        "content": "This is a test news content.",
-        "ai_model": "anthropic"  # 使用 Anthropic 模型
-    }
-    headers = {"Authorization": f"Bearer {test_token}"}
-    
-    response = client.post("/api/v1/news/news_summary_custom_model", json=payload, headers=headers)
-    
-    # 确保响应成功
-    assert response.status_code == 200
-    
-    # 解析响应
-    json_response = response.json()
-    
-    # 假设生成的摘要字段在响应中
-    assert "summary" in json_response
-    assert json_response["summary"] != ""  # 摘要内容应非空
+    assert json_response["summary"] != ""

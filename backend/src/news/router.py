@@ -102,12 +102,12 @@ async def news_summary_custom_model(
         payload: NewsSumaryCustomModelSchema, 
         user=Depends(authenticate_user_token)
 ):
-    """
-    Get summary of the news article using a custom AI model (OpenAI or Anthropic).
-    """
     ai_client = get_ai_client(payload.ai_model)
+    
     result = ai_client.generate_summary(payload.content)
+    
     return parse_summary_result(result)
+
 @router.post("/{article_id}/upvote")
 def upvote_article(
         article_id,

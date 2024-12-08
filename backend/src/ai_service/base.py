@@ -26,6 +26,7 @@ class LLMClientTemplate(ABC):
         self.model = model
         self.client = None
         self._initialize_client()  
+        self.ai = ai
 
     @abstractmethod
     def _initialize_client(self):
@@ -52,8 +53,9 @@ class LLMClientTemplate(ABC):
         ]
         return self._generate_text(messages=messages)
 
-    def _generate_text(self, messages: List[Dict[str, str]]) -> str:
+    def _generate_text(self, messages: List[Dict[str, str]]) -> str:       
         try:
+
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=messages,
@@ -62,7 +64,8 @@ class LLMClientTemplate(ABC):
             return response.choices[0].message.content.strip()
         except Exception as e:
             return f"Error: {str(e)}"
-
+        
+#printf(f"@@@ , {response}")
 class MessagePassingInterface(BaseModel):
     """
     Represents the structure of a message sent to the LLM API.
