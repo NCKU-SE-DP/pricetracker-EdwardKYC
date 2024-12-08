@@ -4,8 +4,9 @@ from ..crawler.udn_crawler import UDNCrawler
 from ..auth.service import authenticate_user_token
 from ..database import session_opener
 from .models import NewsArticle
-from .schemas import PromptRequest, NewsSumaryRequestSchema
-from ..ai_service.openai_client import OpenAIClient
+from .schemas import PromptRequest, NewsSumaryRequestSchema, NewsSumaryCustomModelSchema
+from ..ai_service.client import OpenAIClient , AnthropicClient
+from .utils import process_news_item, parse_summary_result , convert_news_to_dict
 from ..ai_service.config import ai_config
 from .service import (
     article_id_counter,
@@ -13,15 +14,22 @@ from .service import (
     get_article_upvote_details,
     toggle_upvote,
 )
-from .utils import process_news_item, parse_summary_result , convert_news_to_dict
 
-openai_client = OpenAIClient(_api_key=ai_config.OPEN_AI_KEY)
+openai_client = OpenAIClient(api_key=ai_config.OPEN_AI_KEY, model=ai_config.OPEN_AI_MODEL)
+anthropic_client = AnthropicClient(api_key=ai_config.ANTHROPIC_API_KEY, model=ai_config.ANTHROPIC_MODEL)
 
 router = APIRouter(
     prefix="/news",
     tags=["News"],
     responses={404: {"description": "Not found"}},
 )
+def get_ai_client(model: str):
+    if model == "openai":
+        return openai_client
+    elif model == "anthropic":
+        return anthropic_client
+    else:
+        raise ValueError("Invalid model specified. Choose 'openai' or 'anthropic'.")
 
 @router.get("/news")
 def fetch_news_with_upvote_details(db: Session = Depends(session_opener)):
@@ -89,6 +97,17 @@ async def news_summary(
     result = openai_client.generate_summary(payload.content)
     return parse_summary_result(result)
 
+@router.post("/news_summary_custom_model")
+async def news_summary_custom_model(
+        payload: NewsSumaryCustomModelSchema, 
+        user=Depends(authenticate_user_token)
+):
+    """
+    Get summary of the news article using a custom AI model (OpenAI or Anthropic).
+    """
+    ai_client = get_ai_client(payload.ai_model)
+    result = ai_client.generate_summary(payload.content)
+    return parse_summary_result(result)
 @router.post("/{article_id}/upvote")
 def upvote_article(
         article_id,

@@ -1,6 +1,67 @@
 import abc
+from abc import ABC, abstractmethod
 from typing import List, Dict
 from pydantic import BaseModel, Field
+import aisuite as ai
+from .prompts import EXTRACT_KEYWORDS_PROMPT, GENERATE_SUMMARY_PROMPT, RELEVANCE_CHECK_PROMPT
+
+class LLMClientBase(metaclass=abc.ABCMeta):
+    @staticmethod
+    @abc.abstractmethod
+    def _generate_text(messages: List[Dict[str, str]]) -> str:
+        pass
+
+    @staticmethod
+    def validate_message_format(message: Dict[str, str]) -> bool:
+        required_keys = {"role", "content"}
+        return all(key in message for key in required_keys) and isinstance(message["content"], str)
+
+    def validate_messages(self, messages: List[Dict[str, str]]) -> bool:
+        return all(self.validate_message_format(message) for message in messages)
+    
+
+class LLMClientTemplate(ABC):
+    def __init__(self, api_key: str, model: str):
+        self.api_key = api_key
+        self.model = model
+        self.client = None
+        self._initialize_client()  
+
+    @abstractmethod
+    def _initialize_client(self):
+        pass
+
+    def evaluate_relevance(self, content: str) -> str:
+        messages = [
+            {"role": "system", "content": RELEVANCE_CHECK_PROMPT},
+            {"role": "user", "content": content},
+        ]
+        return self._generate_text(messages=messages)
+
+    def generate_summary(self, content: str) -> str:
+        messages = [
+            {"role": "system", "content": GENERATE_SUMMARY_PROMPT},
+            {"role": "user", "content": content},
+        ]
+        return self._generate_text(messages=messages)
+
+    def extract_search_keywords(self, content: str) -> str:
+        messages = [
+            {"role": "system", "content": EXTRACT_KEYWORDS_PROMPT},
+            {"role": "user", "content": content},
+        ]
+        return self._generate_text(messages=messages)
+
+    def _generate_text(self, messages: List[Dict[str, str]]) -> str:
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=messages,
+                temperature=0.75,
+            )
+            return response.choices[0].message.content.strip()
+        except Exception as e:
+            return f"Error: {str(e)}"
 
 class MessagePassingInterface(BaseModel):
     """
@@ -16,68 +77,3 @@ class MessagePassingInterface(BaseModel):
             {"role": "user", "content": f"{self.user_content}"},
         ]
         return value
-    
-
-
-class LLMClientBase(metaclass=abc.ABCMeta):
-    """
-    Abstract base class for an LLM (Large Language Model) client.
-    Defines the required interface for any LLM client implementation.
-    """
-
-    @abc.abstractmethod
-    def evaluate_relevance(self, content: str) -> str:
-        """
-        Evaluates the relevance of the content.
-        :param content: The input text to evaluate.
-        :return: A string indicating the relevance ('high', 'medium', 'low').
-        """
-        pass
-
-    @abc.abstractmethod
-    def generate_summary(self, content: str) -> str:
-        """
-        Generates a summary for the given content.
-        :param content: The input text to summarize.
-        :return: A string containing the summary in JSON format.
-        """
-        pass
-
-    @abc.abstractmethod
-    def extract_search_keywords(self, content: str) -> str:
-        """
-        Extracts search keywords from the given content.
-        :param content: The input text to analyze.
-        :return: A space-separated string of keywords.
-        """
-        pass
-
-    @staticmethod
-    @abc.abstractmethod
-    def _generate_text(messages: List[Dict[str, str]]) -> str:
-        """
-        Sends a list of messages to the LLM and retrieves the generated text.
-        :param messages: A list of messages to send to the LLM.
-        :return: The text response from the LLM.
-        """
-        pass
-
-    @staticmethod
-    def validate_message_format(message: Dict[str, str]) -> bool:
-        """
-        Validates the format of a single message to ensure it conforms to the required structure.
-        :param message: A dictionary representing a single message.
-        :return: True if valid, False otherwise.
-        """
-        required_keys = {"role", "content"}
-        return all(key in message for key in required_keys) and isinstance(message["content"], str)
-
-    def validate_messages(self, messages: List[Dict[str, str]]) -> bool:
-        """
-        Validates a list of messages to ensure all conform to the required structure.
-        :param messages: A list of message dictionaries.
-        :return: True if all messages are valid, False otherwise.
-        """
-        return all(self.validate_message_format(message) for message in messages)
-
-

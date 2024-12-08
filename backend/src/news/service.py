@@ -9,13 +9,13 @@ from ..crawler.crawler_base import Headline
 from .models import NewsArticle
 from ..auth.models import user_news_association_table
 from .config import news_config
-from ..ai_service.openai_client import OpenAIClient
+from ..ai_service.client import OpenAIClient
 from ..ai_service.config import ai_config
 from .utils import process_news_item, parse_summary_result
 from ..database import SessionLocal
 # Unique ID counter for generating temporary article IDs in memory.
 article_id_counter = itertools.count(start=1000000)
-openai_client = OpenAIClient(_api_key=ai_config.OPEN_AI_KEY)
+openai_client = OpenAIClient(api_key=ai_config.OPEN_AI_KEY, model=ai_config.OPEN_AI_MODEL)
 crawler = UDNCrawler()
 def add_news_article(news_article_data):
     """
