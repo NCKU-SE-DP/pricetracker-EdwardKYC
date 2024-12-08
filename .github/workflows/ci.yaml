@@ -70,7 +70,10 @@ jobs:
           GLOBAL_TRACES_SAMPLE_RATE: 1.0
           GLOBAL_FETCH_NEWS_INTERVAL_MINUTES: 100
           AI_OPEN_AI_KEY: ${{ secrets.OPENAI_KEY }}
-          AI_OPEN_AI_MODEL: gpt-turbo-3.5
+          AI_OPEN_AI_MODEL: openai:gpt-3.5-turbo
+          AI_ANTHROPIC_API_KEY: ${{ secrets.AUTHROPIC_API_KEY }}
+          AI_ANTHROPIC_MODEL: anthropic:claude-3-5-sonnet-20240620
+
         run: |
           cd backend
           pytest tests/integration --cov=src --cov-report=xml --disable-warnings
