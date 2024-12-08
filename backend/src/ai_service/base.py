@@ -79,3 +79,5 @@ class LLMClientBase(metaclass=abc.ABCMeta):
         :return: True if all messages are valid, False otherwise.
         """
         return all(self.validate_message_format(message) for message in messages)
+
+

@@ -3,6 +3,7 @@ from typing import List, Dict
 from .prompts import EXTRACT_KEYWORDS_PROMPT, GENERATE_SUMMARY_PROMPT, RELEVANCE_CHECK_PROMPT
 from openai import OpenAI
 
+
 class OpenAIClient(LLMClientBase):
     """
     Implementation of LLMClientBase for interacting with OpenAI's API.
