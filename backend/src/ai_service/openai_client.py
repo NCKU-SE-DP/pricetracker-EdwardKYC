@@ -1,5 +1,6 @@
 from .base import LLMClientBase
 from typing import List, Dict
+from openai import OpenAI
 
 class OpenAIClient(LLMClientBase):
     """
@@ -41,21 +42,22 @@ class OpenAIClient(LLMClientBase):
         return self._generate_text(messages=messages)
 
     @staticmethod
-    def _generate_text(messages: List[Dict[str, str]]) -> str:
+    def _generate_text(self, messages: List[Dict[str, str]]) -> str:
         """
-        Mock implementation of text generation for testing.
-        In real use, this method should call the OpenAI API using the messages.
+        Generate text using OpenAI's API based on the provided messages.
 
         :param messages: List of dict messages to be sent to the OpenAI API.
         :return: The generated response as a string.
         """
-        # Example of how the actual implementation might look:
-        # response = openai.ChatCompletion.create(
-        #     model=self.model,
-        #     messages=messages,
-        #     api_key=self.api_key
-        # )
-        # return response['choices'][0]['message']['content']
-
-        # Mocked response for demonstration/testing purposes
-        return "Mocked response based on input messages"
+        try:
+            # Call OpenAI's ChatCompletion API
+            response = OpenAI.ChatCompletion.create(
+                model=self.model,
+                messages=messages,
+                api_key=self.api_key
+            )
+            # Extract and return the generated content
+            return response['choices'][0]['message']['content'].strip()
+        except OpenAI.error.OpenAIError as e:
+            # Handle API errors gracefully
+            return f"Error: {e}"
