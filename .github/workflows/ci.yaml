@@ -6,10 +6,12 @@ on:
       - 'main'
       - 'develop'
       - 'refactor/crawler-oop-implementation'
+      - 'refactor/llm_client'
   pull_request:
     branches:
       - 'main'
       - 'develop'
+      - 'refactor/llm_client'
 
 jobs:
   test:
