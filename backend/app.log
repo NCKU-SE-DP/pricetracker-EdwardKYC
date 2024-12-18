@@ -12,3 +12,212 @@
 2024-12-18 15:28:38,275 - ERROR - Token has expired: Signature has expired.
 2024-12-18 15:28:38,794 - DEBUG - Decoding token: eyJhbGciOi...
 2024-12-18 15:28:38,805 - ERROR - Token has expired: Signature has expired.
+2024-12-19 00:22:28,541 - src.logger.base - INFO - Fetching all news articles with upvote details.
+2024-12-19 00:22:28,548 - src.logger.base - INFO - Successfully fetched 2 news articles.
+2024-12-19 00:22:28,957 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:22:28,973 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
+2024-12-19 00:22:29,243 - src.logger.base - INFO - Extracting search keywords from prompt: Test search prompt...
+2024-12-19 00:22:29,243 - src.logger.base - INFO - Successfully extracted keywords: keywords
+2024-12-19 00:22:29,243 - src.logger.base - INFO - Fetching news articles for keywords: keywords
+2024-12-19 00:22:29,243 - src.logger.base - INFO - Successfully fetched 1 news articles.
+2024-12-19 00:22:29,244 - src.logger.base - DEBUG - Parsing news article http://example.com/news1
+2024-12-19 00:22:29,244 - src.logger.base - DEBUG - Sending GET request to http://example.com/news1 with params: None
+2024-12-19 00:22:29,244 - src.logger.base - INFO - Request to http://example.com/news1 was successful with status code <Mock name='mock.status_code' id='2753933697296'>
+2024-12-19 00:22:29,245 - src.logger.base - INFO - Processed news article: http://example.com/news1
+2024-12-19 00:22:29,245 - src.logger.base - INFO - Successfully sorted 1 news articles.
+2024-12-19 00:22:29,253 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:22:29,256 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
+2024-12-19 00:22:29,271 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:22:29,274 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
+2024-12-19 00:22:29,287 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:22:29,290 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
+2024-12-19 00:22:29,306 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:22:29,310 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
+2024-12-19 00:22:29,324 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:22:29,327 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
+2024-12-19 00:22:29,343 - src.logger.base - INFO - Received request for necessities prices with category: None, commodity: None
+2024-12-19 00:22:29,343 - src.logger.base - INFO - API request successful. Parsing response.
+2024-12-19 00:22:29,353 - src.logger.base - INFO - Received request for necessities prices with category: 翧ㄅ, commodity: 参风罦蔼纔借翧ㄅ
+2024-12-19 00:22:29,353 - src.logger.base - INFO - API request successful. Parsing response.
+2024-12-19 00:22:29,362 - src.logger.base - INFO - Attempting to create user: newuser
+2024-12-19 00:22:29,654 - src.logger.base - INFO - User newuser created successfully.
+2024-12-19 00:22:29,962 - src.logger.base - INFO - Login attempt for user: testuser
+2024-12-19 00:22:30,238 - src.logger.base - INFO - Access token created for user: testuser
+2024-12-19 00:22:30,238 - src.logger.base - INFO - Login successful for user: testuser
+2024-12-19 00:22:30,249 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:22:30,255 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
+2024-12-19 00:22:30,384 - src.logger.base - DEBUG - Sending GET request to None with params: {'page': 1, 'id': 'search:technology', 'channelId': 2, 'type': 'searchword'}
+2024-12-19 00:22:30,385 - src.logger.base - INFO - Request to None was successful with status code 200
+2024-12-19 00:22:30,389 - src.logger.base - DEBUG - Sending GET request to https://udn.com/news/test-news with params: None
+2024-12-19 00:22:30,389 - src.logger.base - INFO - Request to https://udn.com/news/test-news was successful with status code 200
+2024-12-19 00:22:30,421 - src.logger.base - ERROR - An unexpected error occurred while requesting None: Network Error
+2024-12-19 00:22:30,426 - src.logger.base - DEBUG - Sending GET request to None with params: {'page': 1, 'id': 'search:technology'}
+2024-12-19 00:22:30,427 - src.logger.base - INFO - Request to None was successful with status code 200
+2024-12-19 00:24:40,054 - src.logger.base - INFO - Fetching all news articles with upvote details.
+2024-12-19 00:24:40,062 - src.logger.base - INFO - Successfully fetched 2 news articles.
+2024-12-19 00:24:40,434 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:24:40,439 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
+2024-12-19 00:24:40,749 - src.logger.base - INFO - Extracting search keywords from prompt: Test search prompt...
+2024-12-19 00:24:40,750 - src.logger.base - INFO - Successfully extracted keywords: keywords
+2024-12-19 00:24:40,750 - src.logger.base - INFO - Fetching news articles for keywords: keywords
+2024-12-19 00:24:40,750 - src.logger.base - INFO - Successfully fetched 1 news articles.
+2024-12-19 00:24:40,751 - src.logger.base - DEBUG - Parsing news article http://example.com/news1
+2024-12-19 00:24:40,751 - src.logger.base - DEBUG - Sending GET request to http://example.com/news1 with params: None
+2024-12-19 00:24:40,751 - src.logger.base - INFO - Request to http://example.com/news1 was successful with status code <Mock name='mock.status_code' id='3175926896800'>
+2024-12-19 00:24:40,753 - src.logger.base - INFO - Processed news article: http://example.com/news1
+2024-12-19 00:24:40,754 - src.logger.base - INFO - Successfully sorted 1 news articles.
+2024-12-19 00:24:40,762 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:24:40,767 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
+2024-12-19 00:24:40,783 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:24:40,787 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
+2024-12-19 00:24:40,802 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:24:40,805 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
+2024-12-19 00:24:40,820 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:24:40,825 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
+2024-12-19 00:24:40,840 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:24:40,845 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
+2024-12-19 00:24:40,863 - src.logger.base - INFO - Received request for necessities prices with category: None, commodity: None
+2024-12-19 00:24:40,864 - src.logger.base - INFO - API request successful. Parsing response.
+2024-12-19 00:24:40,873 - src.logger.base - INFO - Received request for necessities prices with category: 翧ㄅ, commodity: 参风罦蔼纔借翧ㄅ
+2024-12-19 00:24:40,874 - src.logger.base - INFO - API request successful. Parsing response.
+2024-12-19 00:24:40,882 - src.logger.base - INFO - Attempting to create user: newuser
+2024-12-19 00:24:41,166 - src.logger.base - INFO - User newuser created successfully.
+2024-12-19 00:24:41,460 - src.logger.base - INFO - Login attempt for user: testuser
+2024-12-19 00:24:41,736 - src.logger.base - INFO - Access token created for user: testuser
+2024-12-19 00:24:41,737 - src.logger.base - INFO - Login successful for user: testuser
+2024-12-19 00:24:41,747 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:24:41,751 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
+2024-12-19 00:24:41,865 - src.logger.base - DEBUG - Sending GET request to None with params: {'page': 1, 'id': 'search:technology', 'channelId': 2, 'type': 'searchword'}
+2024-12-19 00:24:41,865 - src.logger.base - INFO - Request to None was successful with status code 200
+2024-12-19 00:24:41,869 - src.logger.base - DEBUG - Sending GET request to https://udn.com/news/test-news with params: None
+2024-12-19 00:24:41,870 - src.logger.base - INFO - Request to https://udn.com/news/test-news was successful with status code 200
+2024-12-19 00:24:41,877 - src.logger.base - ERROR - An unexpected error occurred while requesting None: Network Error
+2024-12-19 00:24:41,882 - src.logger.base - DEBUG - Sending GET request to None with params: {'page': 1, 'id': 'search:technology'}
+2024-12-19 00:24:41,882 - src.logger.base - INFO - Request to None was successful with status code 200
+2024-12-19 00:27:15,061 - src.logger.base - INFO - Fetching all news articles with upvote details.
+2024-12-19 00:27:15,069 - src.logger.base - INFO - Successfully fetched 2 news articles.
+2024-12-19 00:27:15,401 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:27:15,405 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
+2024-12-19 00:27:15,682 - src.logger.base - INFO - Extracting search keywords from prompt: Test search prompt...
+2024-12-19 00:27:15,682 - src.logger.base - INFO - Successfully extracted keywords: keywords
+2024-12-19 00:27:15,682 - src.logger.base - INFO - Fetching news articles for keywords: keywords
+2024-12-19 00:27:15,682 - src.logger.base - INFO - Successfully fetched 1 news articles.
+2024-12-19 00:27:15,682 - src.logger.base - DEBUG - Parsing news article http://example.com/news1
+2024-12-19 00:27:15,682 - src.logger.base - DEBUG - Sending GET request to http://example.com/news1 with params: None
+2024-12-19 00:27:15,683 - src.logger.base - INFO - Request to http://example.com/news1 was successful with status code <Mock name='mock.status_code' id='2578845050592'>
+2024-12-19 00:27:15,684 - src.logger.base - INFO - Processed news article: http://example.com/news1
+2024-12-19 00:27:15,684 - src.logger.base - INFO - Successfully sorted 1 news articles.
+2024-12-19 00:27:15,694 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:27:15,697 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
+2024-12-19 00:27:15,715 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:27:15,719 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
+2024-12-19 00:27:15,734 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:27:15,738 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
+2024-12-19 00:27:15,755 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:27:15,759 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
+2024-12-19 00:27:15,771 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:27:15,776 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
+2024-12-19 00:27:15,790 - src.logger.base - INFO - Received request for necessities prices with category: None, commodity: None
+2024-12-19 00:27:15,790 - src.logger.base - INFO - API request successful. Parsing response.
+2024-12-19 00:27:15,799 - src.logger.base - INFO - Received request for necessities prices with category: 翧ㄅ, commodity: 参风罦蔼纔借翧ㄅ
+2024-12-19 00:27:15,801 - src.logger.base - INFO - API request successful. Parsing response.
+2024-12-19 00:27:15,810 - src.logger.base - INFO - Attempting to create user: newuser
+2024-12-19 00:27:16,093 - src.logger.base - INFO - User newuser created successfully.
+2024-12-19 00:27:16,386 - src.logger.base - INFO - Login attempt for user: testuser
+2024-12-19 00:27:16,703 - src.logger.base - INFO - Access token created for user: testuser
+2024-12-19 00:27:16,704 - src.logger.base - INFO - Login successful for user: testuser
+2024-12-19 00:27:16,713 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:27:16,716 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
+2024-12-19 00:27:16,824 - src.logger.base - DEBUG - Sending GET request to None with params: {'page': 1, 'id': 'search:technology', 'channelId': 2, 'type': 'searchword'}
+2024-12-19 00:27:16,825 - src.logger.base - INFO - Request to None was successful with status code 200
+2024-12-19 00:27:16,829 - src.logger.base - DEBUG - Sending GET request to https://udn.com/news/test-news with params: None
+2024-12-19 00:27:16,830 - src.logger.base - INFO - Request to https://udn.com/news/test-news was successful with status code 200
+2024-12-19 00:27:16,837 - src.logger.base - ERROR - An unexpected error occurred while requesting None: Network Error
+2024-12-19 00:27:16,841 - src.logger.base - DEBUG - Sending GET request to None with params: {'page': 1, 'id': 'search:technology'}
+2024-12-19 00:27:16,842 - src.logger.base - INFO - Request to None was successful with status code 200
+2024-12-19 00:31:03,926 - src.logger.base - INFO - Extracting search keywords from prompt: Test search prompt...
+2024-12-19 00:31:03,928 - src.logger.base - INFO - Successfully extracted keywords: keywords
+2024-12-19 00:31:03,928 - src.logger.base - INFO - Fetching news articles for keywords: keywords
+2024-12-19 00:31:03,929 - src.logger.base - INFO - Successfully fetched 1 news articles.
+2024-12-19 00:31:03,929 - src.logger.base - DEBUG - Parsing news article http://example.com/news1
+2024-12-19 00:31:03,929 - src.logger.base - DEBUG - Sending GET request to http://example.com/news1 with params: None
+2024-12-19 00:31:03,930 - src.logger.base - INFO - Request to http://example.com/news1 was successful with status code <Mock name='mock.status_code' id='2213559993392'>
+2024-12-19 00:31:03,932 - src.logger.base - INFO - Processed news article: http://example.com/news1
+2024-12-19 00:31:03,933 - src.logger.base - INFO - Successfully sorted 1 news articles.
+2024-12-19 00:31:03,950 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:31:03,954 - src.logger.base - INFO - User testuser authenticated successfully with token
+2024-12-19 00:31:03,956 - src.logger.base - INFO - Received news summary request for user: testuser
+2024-12-19 00:31:03,957 - src.logger.base - DEBUG - Generating summary for content: Test news content...
+2024-12-19 00:31:03,957 - src.logger.base - INFO - News summary generated successfully.
+2024-12-19 00:31:04,835 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:31:04,836 - src.logger.base - INFO - User testuser authenticated successfully with token
+2024-12-19 00:31:06,463 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:31:06,466 - src.logger.base - INFO - User testuser authenticated successfully with token
+2024-12-19 00:31:10,127 - src.logger.base - INFO - Received request for necessities prices with category: None, commodity: None
+2024-12-19 00:31:10,130 - src.logger.base - INFO - API request successful. Parsing response.
+2024-12-19 00:31:10,152 - src.logger.base - INFO - Received request for necessities prices with category: 翧ㄅ, commodity: 参风罦蔼纔借翧ㄅ
+2024-12-19 00:31:10,153 - src.logger.base - INFO - API request successful. Parsing response.
+2024-12-19 00:31:10,167 - src.logger.base - INFO - Attempting to create user: newuser
+2024-12-19 00:31:10,509 - src.logger.base - INFO - User newuser created successfully.
+2024-12-19 00:31:10,870 - src.logger.base - INFO - Login attempt for user: testuser
+2024-12-19 00:31:11,216 - src.logger.base - INFO - Access token created for user: testuser
+2024-12-19 00:31:11,216 - src.logger.base - INFO - Login successful for user: testuser
+2024-12-19 00:31:11,228 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:31:11,231 - src.logger.base - INFO - User testuser authenticated successfully with token
+2024-12-19 00:31:11,231 - src.logger.base - INFO - Fetching information for user: testuser
+2024-12-19 00:31:11,232 - src.logger.base - INFO - User testuser successfully fetched.
+2024-12-19 00:31:11,372 - src.logger.base - DEBUG - Sending GET request to None with params: {'page': 1, 'id': 'search:technology', 'channelId': 2, 'type': 'searchword'}
+2024-12-19 00:31:11,373 - src.logger.base - INFO - Request to None was successful with status code 200
+2024-12-19 00:31:11,379 - src.logger.base - DEBUG - Sending GET request to https://udn.com/news/test-news with params: None
+2024-12-19 00:31:11,379 - src.logger.base - INFO - Request to https://udn.com/news/test-news was successful with status code 200
+2024-12-19 00:31:11,388 - src.logger.base - ERROR - An unexpected error occurred while requesting None: Network Error
+2024-12-19 00:31:11,394 - src.logger.base - DEBUG - Sending GET request to None with params: {'page': 1, 'id': 'search:technology'}
+2024-12-19 00:31:11,395 - src.logger.base - INFO - Request to None was successful with status code 200
+2024-12-19 00:31:23,879 - src.logger.base - INFO - Fetching all news articles with upvote details.
+2024-12-19 00:31:23,888 - src.logger.base - INFO - Successfully fetched 2 news articles.
+2024-12-19 00:31:24,307 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:31:24,309 - src.logger.base - INFO - User testuser authenticated successfully with token
+2024-12-19 00:31:24,311 - src.logger.base - INFO - Fetching user-specific news for user: testuser
+2024-12-19 00:31:24,315 - src.logger.base - INFO - Successfully fetched 2 user-specific news articles.
+2024-12-19 00:31:24,327 - src.logger.base - INFO - Extracting search keywords from prompt: Test search prompt...
+2024-12-19 00:31:24,328 - src.logger.base - INFO - Successfully extracted keywords: keywords
+2024-12-19 00:31:24,328 - src.logger.base - INFO - Fetching news articles for keywords: keywords
+2024-12-19 00:31:24,329 - src.logger.base - INFO - Successfully fetched 1 news articles.
+2024-12-19 00:31:24,329 - src.logger.base - DEBUG - Parsing news article http://example.com/news1
+2024-12-19 00:31:24,329 - src.logger.base - DEBUG - Sending GET request to http://example.com/news1 with params: None
+2024-12-19 00:31:24,330 - src.logger.base - INFO - Request to http://example.com/news1 was successful with status code <Mock name='mock.status_code' id='2371833997792'>
+2024-12-19 00:31:24,331 - src.logger.base - INFO - Processed news article: http://example.com/news1
+2024-12-19 00:31:24,332 - src.logger.base - INFO - Successfully sorted 1 news articles.
+2024-12-19 00:31:24,342 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:31:24,344 - src.logger.base - INFO - User testuser authenticated successfully with token
+2024-12-19 00:31:24,345 - src.logger.base - INFO - Received news summary request for user: testuser
+2024-12-19 00:31:24,346 - src.logger.base - DEBUG - Generating summary for content: Test news content...
+2024-12-19 00:31:24,346 - src.logger.base - INFO - News summary generated successfully.
+2024-12-19 00:31:24,362 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:31:24,365 - src.logger.base - INFO - User testuser authenticated successfully with token
+2024-12-19 00:31:24,382 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:31:24,386 - src.logger.base - INFO - User testuser authenticated successfully with token
+2024-12-19 00:31:24,402 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:31:24,404 - src.logger.base - INFO - User testuser authenticated successfully with token
+2024-12-19 00:31:26,420 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:31:26,422 - src.logger.base - INFO - User testuser authenticated successfully with token
+2024-12-19 00:31:30,252 - src.logger.base - INFO - Received request for necessities prices with category: None, commodity: None
+2024-12-19 00:31:30,254 - src.logger.base - INFO - API request successful. Parsing response.
+2024-12-19 00:31:30,267 - src.logger.base - INFO - Received request for necessities prices with category: 翧ㄅ, commodity: 参风罦蔼纔借翧ㄅ
+2024-12-19 00:31:30,269 - src.logger.base - INFO - API request successful. Parsing response.
+2024-12-19 00:31:30,281 - src.logger.base - INFO - Attempting to create user: newuser
+2024-12-19 00:31:30,630 - src.logger.base - INFO - User newuser created successfully.
+2024-12-19 00:31:30,994 - src.logger.base - INFO - Login attempt for user: testuser
+2024-12-19 00:31:31,338 - src.logger.base - INFO - Access token created for user: testuser
+2024-12-19 00:31:31,338 - src.logger.base - INFO - Login successful for user: testuser
+2024-12-19 00:31:31,350 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-19 00:31:31,351 - src.logger.base - INFO - User testuser authenticated successfully with token
+2024-12-19 00:31:31,352 - src.logger.base - INFO - Fetching information for user: testuser
+2024-12-19 00:31:31,352 - src.logger.base - INFO - User testuser successfully fetched.
+2024-12-19 00:31:31,476 - src.logger.base - DEBUG - Sending GET request to None with params: {'page': 1, 'id': 'search:technology', 'channelId': 2, 'type': 'searchword'}
+2024-12-19 00:31:31,477 - src.logger.base - INFO - Request to None was successful with status code 200
+2024-12-19 00:31:31,482 - src.logger.base - DEBUG - Sending GET request to https://udn.com/news/test-news with params: None
+2024-12-19 00:31:31,483 - src.logger.base - INFO - Request to https://udn.com/news/test-news was successful with status code 200
+2024-12-19 00:31:31,492 - src.logger.base - ERROR - An unexpected error occurred while requesting None: Network Error
+2024-12-19 00:31:31,499 - src.logger.base - DEBUG - Sending GET request to None with params: {'page': 1, 'id': 'search:technology'}
+2024-12-19 00:31:31,500 - src.logger.base - INFO - Request to None was successful with status code 200

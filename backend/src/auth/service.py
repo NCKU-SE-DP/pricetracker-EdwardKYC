@@ -31,7 +31,7 @@ def authenticate_user_token(
     try:
         # 嘗試解碼 JWT
         logger.debug(f"Decoding token: {token[:10]}...")  # 只顯示token的前幾個字符
-        payload = jwt.decode(token, "your_secret_key", algorithms=["HS256"])
+        payload = jwt.decode(token, auth_config.SECRET_KEY, algorithms=["HS256"])
         username: str = payload.get("sub")
         if username is None:
             logger.warning("Token missing 'sub' field")
