@@ -94,11 +94,6 @@ class UDNCrawler(NewsCrawlerBase):
 
     def _perform_request(self, url: str | None = None, params: dict | None = None) -> Response:
         try:
-            # 檢查URL參數是否有效
-            if not url:
-                raise ValueError("The URL must be provided.")  # 模擬未提供URL錯誤
-            
-            # 發送GET請求
             response = requests.get(url, params=params)
             
             # 如果回應的狀態碼表示錯誤，拋出HTTPError

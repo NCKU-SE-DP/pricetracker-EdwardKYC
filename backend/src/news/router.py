@@ -139,8 +139,17 @@ async def search_news_articles(request: PromptRequest):
 async def news_summary(
         payload: NewsSumaryRequestSchema, user=Depends(authenticate_user_token)
 ):
-    result = openai_client.generate_summary(payload.content)
-    return parse_summary_result(result)
+    try:
+        result = openai_client.generate_summary(payload.content)
+        return parse_summary_result(result)
+
+    except Exception as e:
+        capture_exception(e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An error occurred while generating the news summary. Please try again later.",
+        )
+
 
 @router.post("/news_summary_custom_model")
 async def news_summary_custom_model(
