@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Query , HTTPException, status
 from .config import pricing_config
 import requests
+import logging
 from requests.exceptions import RequestException
 from sentry_sdk import capture_exception
 router = APIRouter(
@@ -9,11 +10,30 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+# 設定日誌格式
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+
+# 創建 FileHandler，將日誌寫入 app.log
+file_handler = logging.FileHandler('app.log', mode='a')  # 'a' 表示追加日誌到文件中
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+
+# 創建 StreamHandler，將日誌輸出到控制台
+console_handler = logging.StreamHandler()
+console_handler.setFormatter(formatter)
+logger.addHandler(console_handler)
+
+
 @router.get("/necessities-price")
 def get_necessities_prices(
         category=Query(None), commodity=Query(None)
 ):
     try:
+        logger.info(f"Received request for necessities prices with category: {category}, commodity: {commodity}")
+        
         # 發送 GET 請求至 API
         response = requests.get(
             pricing_config.NECESSITIES_PRICE_API_URL,
@@ -22,13 +42,16 @@ def get_necessities_prices(
 
         # 檢查 API 回應狀態碼是否為 2xx
         response.raise_for_status()
-
+        
+        logger.info("API request successful. Parsing response.")
+        
         # 回傳 API 的 JSON 結果
         return response.json()
 
     except RequestException as e:
         # 捕捉請求相關的錯誤（如連線失敗、超時等）
         capture_exception(e)
+        logger.error(f"Request failed: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="An error occurred while fetching the necessities prices. Please try again later.",
@@ -36,6 +59,7 @@ def get_necessities_prices(
     except ValueError as e:
         # 捕捉 JSON 解析錯誤
         capture_exception(e)
+        logger.error(f"Error parsing API response: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="An error occurred while processing the API response. Please try again later.",
@@ -43,6 +67,7 @@ def get_necessities_prices(
     except Exception as e:
         # 捕捉其他未知錯誤
         capture_exception(e)
+        logger.error(f"Unexpected error: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="An unexpected error occurred. Please try again later.",

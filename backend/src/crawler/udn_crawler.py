@@ -31,6 +31,7 @@ UDNCrawler Methods:
     save(self, news: News, db: Session): Saves a news article to the database.
     _commit_changes(db: Session): Commits the changes to the database with error handling.
 """
+import logging
 from sentry_sdk import capture_exception
 import requests
 from ..news.config import news_config
@@ -43,6 +44,22 @@ from .crawler_base import NewsCrawlerBase, Headline, News, NewsWithSummary
 from urllib.parse import quote
 from requests.exceptions import RequestException, Timeout, ConnectionError, HTTPError
 
+
+logger = logging.getLogger(__name__)
+
+# Set the log level and format
+logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+
+# Create a console handler to output logs to console
+console_handler = logging.StreamHandler()
+console_handler.setFormatter(formatter)
+logger.addHandler(console_handler)
+
+# Create a file handler to output logs to a file (log.txt)
+file_handler = logging.FileHandler('app.log')
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
 
 class UDNCrawler(NewsCrawlerBase):
     CHANNEL_ID = 2
@@ -95,40 +112,46 @@ class UDNCrawler(NewsCrawlerBase):
     def _perform_request(self, url: str | None = None, params: dict | None = None) -> Response:
         try:
             response = requests.get(url, params=params)
-            
+            logger.debug(f"Sending GET request to {url} with params: {params}")
             # 如果回應的狀態碼表示錯誤，拋出HTTPError
             response.raise_for_status()
-            
+            logger.info(f"Request to {url} was successful with status code {response.status_code}")
             return response
 
         except ValueError as e:
-            # 捕獲URL未提供錯誤
+            # Capture ValueError when URL is not provided
             capture_exception(e)
+            logger.error(f"Invalid input: {str(e)}")
             raise RuntimeError(f"Invalid input: {str(e)}")
-        
+            
         except Timeout as e:
-            # 捕獲超時錯誤
+            # Capture Timeout error
             capture_exception(e)
+            logger.error(f"Request to {url} timed out: {e}")
             raise RuntimeError(f"Request to {url} timed out: {e}")
-        
+            
         except ConnectionError as e:
-            # 捕獲連接錯誤
+            # Capture ConnectionError
             capture_exception(e)
+            logger.error(f"Connection error while requesting {url}: {e}")
             raise RuntimeError(f"Connection error while requesting {url}: {e}")
-        
+            
         except HTTPError as e:
-            # 捕獲HTTP錯誤，例如 404 或 500
+            # Capture HTTPError such as 404 or 500
             capture_exception(e)
+            logger.error(f"HTTP error occurred during request to {url}: {e}")
             raise RuntimeError(f"HTTP error occurred during request to {url}: {e}")
-        
+            
         except RequestException as e:
-            # 捕獲其他請求錯誤
+            # Capture any other Request exceptions
             capture_exception(e)
+            logger.error(f"Failed to perform request to {url}: {e}")
             raise RuntimeError(f"Failed to perform request to {url}: {e}")
-        
+            
         except Exception as e:
-            # 捕獲所有其他未預料的錯誤
+            # Capture all other unexpected errors
             capture_exception(e)
+            logger.error(f"An unexpected error occurred while requesting {url}: {e}")
             raise RuntimeError(f"An unexpected error occurred while requesting {url}: {e}")
 
     @staticmethod
