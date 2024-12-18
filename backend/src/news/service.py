@@ -95,7 +95,9 @@ def get_article_upvote_details(article_id, uid, db):
         )
 
     return upvote_count, has_voted
-
+    # if article_id == -1:  # 假設 -1 是無效的 ID
+    #     raise ValueError("Invalid article ID.")
+    
 
 def toggle_upvote(article_id, uid, db_session):
     """

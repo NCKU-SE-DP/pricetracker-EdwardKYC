@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends , HTTPException, status
 from sentry_sdk import capture_exception
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import SQLAlchemyError
 from ..crawler.udn_crawler import UDNCrawler    
 from ..auth.service import authenticate_user_token
 from ..database import session_opener
@@ -55,25 +56,41 @@ def get_user_specific_news(
     db: Session = Depends(session_opener),
     user = Depends(authenticate_user_token)
 ):
-    """
-    Fetch news articles specific to the authenticated user.
+    try:
+        news = db.query(NewsArticle).order_by(NewsArticle.time.desc()).all()
+        result = []
+        for article in news:
+            try:
+                upvotes, upvoted = get_article_upvote_details(article.id, user.id, db)
+            except Exception as e:
+                capture_exception(e)
+                raise HTTPException(
+                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    detail="An error occurred while fetching upvote details for the article.",
+                )
+            result.append(
+                {
+                    **article.__dict__,
+                    "upvotes": upvotes,
+                    "is_upvoted": upvoted,
+                }
+            )
 
-    :param db: Database session dependency for querying news articles.
-    :param user: Authenticated user dependency for user-specific data.
-    :return: A list of news articles with upvote count and the user's upvoted status.
-    """
-    news = db.query(NewsArticle).order_by(NewsArticle.time.desc()).all()
-    result = []
-    for article in news:
-        upvotes, upvoted = get_article_upvote_details(article.id, user.id, db)
-        result.append(
-            {
-                **article.__dict__,
-                "upvotes": upvotes,
-                "is_upvoted": upvoted,
-            }
+        return result
+
+    except SQLAlchemyError as e: 
+        capture_exception(e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An error occurred while fetching news articles from the database. Please try again later.",
         )
-    return result
+
+    except Exception as e:
+        capture_exception(e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An unexpected error occurred while fetching user-specific news. Please try again later.",
+        )
 
 @router.post("/search_news")
 async def search_news_articles(request: PromptRequest):
