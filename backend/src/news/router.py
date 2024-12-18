@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends , HTTPException, status
+from sentry_sdk import capture_exception
 from sqlalchemy.orm import Session
 from ..crawler.udn_crawler import UDNCrawler    
 from ..auth.service import authenticate_user_token
@@ -30,24 +31,25 @@ def get_ai_client(model: str):
         return anthropic_client
     else:
         raise ValueError("Invalid model specified. Choose 'openai' or 'anthropic'.")
-
+    
 @router.get("/news")
 def fetch_news_with_upvote_details(db: Session = Depends(session_opener)):
-    """
-    Fetch all news articles with their upvote details.
-
-    :param db: Database session dependency for querying news articles.
-    :return: A list of news articles with upvote count and upvoted status.
-    """
-    news = db.query(NewsArticle).order_by(NewsArticle.time.desc()).all()
-    result = []
-    for article in news:
-        upvotes, upvoted = get_article_upvote_details(article.id, None, db)
-        result.append(
-            {**article.__dict__, "upvotes": upvotes, "is_upvoted": upvoted}
+    try:
+        news = db.query(NewsArticle).order_by(NewsArticle.time.desc()).all()
+        result = []
+        for article in news:
+            upvotes, upvoted = get_article_upvote_details(article.id, None, db)
+            result.append(
+                {"id": article.id, "title": article.title, "content": article.content, "upvotes": upvotes, "is_upvoted": upvoted}
+            )
+        return result
+    except Exception as e:
+        capture_exception(e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An error occurred while fetching news articles. Please try again later.",
         )
-    return result
-
+    
 @router.get("/user_news")
 def get_user_specific_news(
     db: Session = Depends(session_opener),

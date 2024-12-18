@@ -80,14 +80,6 @@ def fetch_and_process_news(is_initial=False):
             add_news_article(detailed_news)
 
 def get_article_upvote_details(article_id, uid, db):
-    """
-    Retrieves upvote count and user-specific upvote status for an article.
-    
-    :param article_id: The ID of the news article.
-    :param uid: User ID (or None for anonymous).
-    :param db: Database session for querying.
-    :return: Tuple containing upvote count and user-specific upvote status.
-    """
     upvote_count = (
         db.query(user_news_association_table)
         .filter_by(news_articles_id=article_id)
@@ -103,6 +95,7 @@ def get_article_upvote_details(article_id, uid, db):
         )
 
     return upvote_count, has_voted
+
 
 def toggle_upvote(article_id, uid, db_session):
     """
