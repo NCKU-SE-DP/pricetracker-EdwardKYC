@@ -33,7 +33,7 @@ async def login_for_access_token(
     """
     user = validate_user_credentials(db, form_data.username, form_data.password)
     access_token = create_access_token(
-        user_data={"sub": str(user.username)}, expires_delta=timedelta(minutes=30)
+        user_data={"sub": str(user.username)}, expires_delta=timedelta(minutes=1)
     )
     return {"access_token": access_token, "token_type": "bearer"}
 

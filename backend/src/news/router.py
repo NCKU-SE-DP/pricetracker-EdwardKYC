@@ -116,3 +116,7 @@ def upvote_article(
 ):
     message = toggle_upvote(article_id, user.id, db)
     return {"message": message}
+
+@router.get("/sentry-debug")
+async def trigger_error():
+    division_by_zero = 1 / 0

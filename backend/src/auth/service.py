@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
-from fastapi import Depends
+from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from jose import jwt
+from jose import jwt, JWTError , ExpiredSignatureError
 
 from sqlalchemy.orm import Session
 
@@ -9,6 +9,7 @@ from ..database import session_opener
 from .config import auth_config
 from .models import User
 from passlib.context import CryptContext
+from sentry_sdk import capture_exception
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=auth_config.AUTH_TOKEN_URL)
@@ -23,11 +24,54 @@ def validate_user_credentials(db_session: Session, username: str, password: str)
     return user
 
 def authenticate_user_token(
-    token = Depends(oauth2_scheme),
-    db = Depends(session_opener)
+    token: str = Depends(oauth2_scheme),
+    db: Session = Depends(session_opener),
 ):
-    payload = jwt.decode(token, auth_config.SECRET_KEY, algorithms=auth_config.ALGORITHM)
-    return db.query(User).filter(User.username == payload.get("sub")).first()
+    try:
+        # 嘗試解碼 JWT
+        payload = jwt.decode(token, auth_config.SECRET_KEY, algorithms=[auth_config.ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token: missing subject",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        
+        # 查詢用戶
+        user = db.query(User).filter(User.username == username).first()
+        if user is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found",
+            )    
+        return user
+    
+    except ExpiredSignatureError as e:
+        capture_exception(e)
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token has expired",
+        )
+
+    except JWTError as e:
+        # 處理 JWT 解碼失敗的情況並記錄到 Sentry
+        capture_exception(e)
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    except Exception as e:
+        # 捕獲其他可能的例外並記錄到 Sentry
+        capture_exception(e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An unexpected error occurred",
+        )
+
+
 
 def create_access_token(user_data, expires_delta=None):
     to_encode = user_data.copy()
