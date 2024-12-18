@@ -11,23 +11,7 @@ from .config import auth_config
 from .models import User
 from passlib.context import CryptContext
 from sentry_sdk import capture_exception
-
-# 配置 logger，將日誌輸出到 console 和檔案
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-
-# 設定日誌格式
-formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-
-# 創建 FileHandler，將日誌寫入 app.log
-file_handler = logging.FileHandler('app.log', mode='a')  # 'a' 表示追加日誌到文件中
-file_handler.setFormatter(formatter)
-logger.addHandler(file_handler)
-
-# 創建 StreamHandler，將日誌輸出到控制台
-console_handler = logging.StreamHandler()
-console_handler.setFormatter(formatter)
-logger.addHandler(console_handler)
+from ..logger.base import logger
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=auth_config.AUTH_TOKEN_URL)

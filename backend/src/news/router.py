@@ -17,22 +17,7 @@ from .service import (
     get_article_upvote_details,
     toggle_upvote,
 )
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-
-# 設定日誌格式
-formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-
-# 創建 FileHandler，將日誌寫入 app.log
-file_handler = logging.FileHandler('app.log', mode='a')  # 'a' 表示追加日誌到文件中
-file_handler.setFormatter(formatter)
-logger.addHandler(file_handler)
-
-# 創建 StreamHandler，將日誌輸出到控制台
-console_handler = logging.StreamHandler()
-console_handler.setFormatter(formatter)
-logger.addHandler(console_handler)
+from ..logger.base import logger
 
 openai_client = OpenAIClient(api_key=ai_config.OPEN_AI_KEY, model=ai_config.OPEN_AI_MODEL)
 anthropic_client = AnthropicClient(api_key=ai_config.ANTHROPIC_API_KEY, model=ai_config.ANTHROPIC_MODEL)

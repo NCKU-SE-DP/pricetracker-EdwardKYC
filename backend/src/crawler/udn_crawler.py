@@ -43,23 +43,7 @@ from sqlalchemy.orm import Session
 from .crawler_base import NewsCrawlerBase, Headline, News, NewsWithSummary
 from urllib.parse import quote
 from requests.exceptions import RequestException, Timeout, ConnectionError, HTTPError
-
-
-logger = logging.getLogger(__name__)
-
-# Set the log level and format
-logger.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-
-# Create a console handler to output logs to console
-console_handler = logging.StreamHandler()
-console_handler.setFormatter(formatter)
-logger.addHandler(console_handler)
-
-# Create a file handler to output logs to a file (log.txt)
-file_handler = logging.FileHandler('app.log')
-file_handler.setFormatter(formatter)
-logger.addHandler(file_handler)
+from ..logger.base import logger
 
 class UDNCrawler(NewsCrawlerBase):
     CHANNEL_ID = 2
