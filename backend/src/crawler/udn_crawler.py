@@ -31,6 +31,7 @@ UDNCrawler Methods:
     save(self, news: News, db: Session): Saves a news article to the database.
     _commit_changes(db: Session): Commits the changes to the database with error handling.
 """
+from sentry_sdk import capture_exception
 import requests
 from ..news.config import news_config
 from ..news.models import NewsArticle
@@ -40,6 +41,7 @@ from requests.exceptions import RequestException
 from sqlalchemy.orm import Session
 from .crawler_base import NewsCrawlerBase, Headline, News, NewsWithSummary
 from urllib.parse import quote
+from requests.exceptions import RequestException, Timeout, ConnectionError, HTTPError
 
 
 class UDNCrawler(NewsCrawlerBase):
@@ -92,10 +94,47 @@ class UDNCrawler(NewsCrawlerBase):
 
     def _perform_request(self, url: str | None = None, params: dict | None = None) -> Response:
         try:
+            # 檢查URL參數是否有效
+            if not url:
+                raise ValueError("The URL must be provided.")  # 模擬未提供URL錯誤
+            
+            # 發送GET請求
             response = requests.get(url, params=params)
+            
+            # 如果回應的狀態碼表示錯誤，拋出HTTPError
+            response.raise_for_status()
+            
             return response
+
+        except ValueError as e:
+            # 捕獲URL未提供錯誤
+            capture_exception(e)
+            raise RuntimeError(f"Invalid input: {str(e)}")
+        
+        except Timeout as e:
+            # 捕獲超時錯誤
+            capture_exception(e)
+            raise RuntimeError(f"Request to {url} timed out: {e}")
+        
+        except ConnectionError as e:
+            # 捕獲連接錯誤
+            capture_exception(e)
+            raise RuntimeError(f"Connection error while requesting {url}: {e}")
+        
+        except HTTPError as e:
+            # 捕獲HTTP錯誤，例如 404 或 500
+            capture_exception(e)
+            raise RuntimeError(f"HTTP error occurred during request to {url}: {e}")
+        
         except RequestException as e:
+            # 捕獲其他請求錯誤
+            capture_exception(e)
             raise RuntimeError(f"Failed to perform request to {url}: {e}")
+        
+        except Exception as e:
+            # 捕獲所有其他未預料的錯誤
+            capture_exception(e)
+            raise RuntimeError(f"An unexpected error occurred while requesting {url}: {e}")
 
     @staticmethod
     def _parse_headlines(response: Response) -> list[Headline]:

@@ -96,9 +96,26 @@ def get_user_specific_news(
 async def search_news_articles(request: PromptRequest):
     prompt = request.prompt
     news_list = []
-    keywords = openai_client.extract_search_keywords(prompt)
-    crawler = UDNCrawler()
-    news_items = fetch_news_articles_by_keyword(keywords, is_initial=False)
+    
+    try:
+        keywords = openai_client.extract_search_keywords(prompt)
+    except Exception as e:
+        capture_exception(e)
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Failed to extract search keywords from the prompt.",
+        )
+    
+    try:
+        crawler = UDNCrawler()
+        news_items = fetch_news_articles_by_keyword(keywords, is_initial=False)
+    except Exception as e:
+        capture_exception(e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An error occurred while fetching news articles. Please try again later.",
+        )
+    
     for news in news_items:
         try:
             abc = crawler.parse(news.url)
@@ -106,9 +123,18 @@ async def search_news_articles(request: PromptRequest):
             detailed_news["id"] = next(article_id_counter)
             news_list.append(detailed_news)
         except Exception as e:
-            print(e)
-    return sorted(news_list, key=lambda x: x["time"], reverse=True)
-
+            capture_exception(e)
+            print(f"Error processing news article {news.url}: {e}")
+    
+    try:
+        return sorted(news_list, key=lambda x: x["time"], reverse=True)
+    except Exception as e:
+        capture_exception(e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An error occurred while sorting the news articles.",
+        )
+    
 @router.post("/news_summary")
 async def news_summary(
         payload: NewsSumaryRequestSchema, user=Depends(authenticate_user_token)
