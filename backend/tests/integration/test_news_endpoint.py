@@ -1,5 +1,6 @@
 import pytest
 from fastapi.testclient import TestClient
+from unittest.mock import patch, MagicMock
 from sqlalchemy import create_engine, StaticPool
 from sqlalchemy.orm import sessionmaker
 import json
@@ -11,7 +12,7 @@ from src.news.schemas import NewsSumaryRequestSchema, PromptRequest
 from src.database import Base, session_opener, user_news_association_table
 from unittest.mock import Mock
 from src.crawler.crawler_base import Headline
-
+from src.ai_service.prompts import TEST_NEWS
 SECRET_KEY = "1892dhianiandowqd0n"
 ALGORITHM = "HS256"
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
@@ -122,7 +123,7 @@ def mock_openai(mocker, return_content):
     # mock_completion.choices = [mock_choice]
 
     # mock_openai_client.return_value.chat.completions.create.return_value = mock_completion
-    mock_openai_client = mocker.patch('src.ai_service.openai_client.OpenAIClient._generate_text')
+    mock_openai_client = mocker.patch('src.ai_service.base.LLMClientTemplate._generate_text')
 
     mock_openai_client.return_value = return_content
 
@@ -191,3 +192,30 @@ def test_downvote_article(test_user_and_articles, test_token):
     response = client.post(f"/api/v1/news/{articles[0].id}/upvote", headers=headers)
     assert response.status_code == 200
     assert response.json()["message"] == "Upvote removed"
+
+
+def test_news_summary_custom_model_openai(test_token):
+    payload = {
+        "content": TEST_NEWS,
+        "ai_model": "openai"
+    }
+    headers = {"Authorization": f"Bearer {test_token}"}
+    response = client.post("/api/v1/news/news_summary_custom_model", json=payload, headers=headers)
+    
+    assert response.status_code == 200
+    json_response = response.json()
+    assert "summary" in json_response
+    assert json_response["summary"] != ""
+
+def test_news_summary_custom_model_anthropic(test_token):
+    payload = {
+        "content": TEST_NEWS,
+        "ai_model": "anthropic"  # 这里使用 anthropic 模型
+    }
+    headers = {"Authorization": f"Bearer {test_token}"}
+    response = client.post("/api/v1/news/news_summary_custom_model", json=payload, headers=headers)
+    
+    assert response.status_code == 200
+    json_response = response.json()
+    assert "summary" in json_response
+    assert json_response["summary"] != ""

@@ -7,6 +7,8 @@ class AIConfig(BaseSettings):
         env_prefix = "AI_"
         extra = "ignore"
 
+    ANTHROPIC_API_KEY: str
+    ANTHROPIC_MODEL: str
     OPEN_AI_KEY: str
     OPEN_AI_MODEL: str
 
