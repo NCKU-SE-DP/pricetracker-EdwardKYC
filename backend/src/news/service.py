@@ -17,24 +17,12 @@ from ..database import SessionLocal
 article_id_counter = itertools.count(start=1000000)
 openai_client = OpenAIClient(api_key=ai_config.OPEN_AI_KEY, model=ai_config.OPEN_AI_MODEL)
 crawler = UDNCrawler()
-def add_news_article(news_article_data):
-    """
-    Adds a news article to the database.
 
-    :param news_article_data: Dictionary containing article information.
-    :return: None
-    """
-    
+def add_news_article(news_article_data):
     session = SessionLocal()
     crawler.save(news=news_article_data, db=session)
 
 def add_news_article(news_article_data):
-    """
-    Adds a news article to the database.
-
-    :param news_article_data: Dictionary containing article information.
-    :return: None
-    """
     session = Session() 
     session.add(NewsArticle(
         url=news_article_data["url"],
@@ -48,28 +36,13 @@ def add_news_article(news_article_data):
     session.close()
 
 def fetch_news_articles_by_keyword(search_term, is_initial=False):
-    """
-    Fetches news articles from UDN based on the provided search keyword.
-    
-    :param search_term: The keyword to search for in news articles.
-    :param is_initial: If True, fetches multiple pages of news; otherwise, fetches only the first page.
-    :return: List of news articles.
-    """
     if is_initial:
         return crawler.startup(search_term=search_term)
     else:
         return crawler.get_headline(search_term=search_term, page=1)
     
 def fetch_and_process_news(is_initial=False):
-    """
-    Fetches news articles and processes them to assess relevance and generate summaries.
-
-    :param is_initial: If True, fetches multiple pages of news articles.
-    :return: None
-    """
     news_articles = fetch_news_articles_by_keyword("價格", is_initial=is_initial)
-
-    # Iterate through each news article
     for article in news_articles:
         article_title = article["title"]
         relevance = openai_client.evaluate_relevance(article_title)
@@ -80,14 +53,6 @@ def fetch_and_process_news(is_initial=False):
             add_news_article(detailed_news)
 
 def get_article_upvote_details(article_id, uid, db):
-    """
-    Retrieves upvote count and user-specific upvote status for an article.
-    
-    :param article_id: The ID of the news article.
-    :param uid: User ID (or None for anonymous).
-    :param db: Database session for querying.
-    :return: Tuple containing upvote count and user-specific upvote status.
-    """
     upvote_count = (
         db.query(user_news_association_table)
         .filter_by(news_articles_id=article_id)
@@ -103,17 +68,11 @@ def get_article_upvote_details(article_id, uid, db):
         )
 
     return upvote_count, has_voted
+    # if article_id == -1:  # 假設 -1 是無效的 ID
+    #     raise ValueError("Invalid article ID.")
+    
 
 def toggle_upvote(article_id, uid, db_session):
-    """
-    Toggles the upvote status for a specific article by a user.
-
-    :param article_id: The ID of the news article.
-    :param user_id: The ID of the user.
-    :param db_session: The database session for executing queries.
-    :return: A message indicating whether the upvote was added or removed.
-    """
-    # Check if the user has already upvoted the article
     existing_upvote = db_session.execute(
         select(user_news_association_table).where(
             user_news_association_table.c.news_articles_id == article_id,
@@ -121,7 +80,6 @@ def toggle_upvote(article_id, uid, db_session):
         )
     ).scalar()
 
-    # If upvote exists, remove it
     if existing_upvote:
         delete_stmt = delete(user_news_association_table).where(
             user_news_association_table.c.news_articles_id == article_id,
@@ -131,7 +89,6 @@ def toggle_upvote(article_id, uid, db_session):
         db_session.commit()
         return "Upvote removed"
 
-    # Otherwise, add a new upvote
     else:
         insert_stmt = insert(user_news_association_table).values(
             news_articles_id=article_id, user_id=uid

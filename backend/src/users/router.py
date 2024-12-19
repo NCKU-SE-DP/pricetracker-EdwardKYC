@@ -1,9 +1,10 @@
+import logging
 from datetime import timedelta
-
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from sentry_sdk import capture_exception
 from ..database import session_opener
 from .schemas import UserAuthSchema
 from ..auth.models import User
@@ -13,6 +14,7 @@ from ..auth.service import (
     pwd_context,
     authenticate_user_token
 )
+from ..logger.base import logger
 
 router = APIRouter(
     prefix="/users",
@@ -22,37 +24,114 @@ router = APIRouter(
 
 @router.post("/login")
 async def login_for_access_token(
-        form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(session_opener)
+    form_data: OAuth2PasswordRequestForm = Depends(), 
+    db: Session = Depends(session_opener)
 ):
-    """
-    Authenticates a user and generates an access token.
+    try:
+        logger.info(f"Login attempt for user: {form_data.username}")
 
-    :param form_data: Form data containing username and password.
-    :param db: Database session dependency.
-    :return: JSON with access token and token type.
-    """
-    user = validate_user_credentials(db, form_data.username, form_data.password)
-    access_token = create_access_token(
-        user_data={"sub": str(user.username)}, expires_delta=timedelta(minutes=30)
-    )
-    return {"access_token": access_token, "token_type": "bearer"}
+        # 驗證用戶憑據
+        user = validate_user_credentials(db, form_data.username, form_data.password)
+        if not user:
+            logger.warning(f"Invalid login attempt for user: {form_data.username}")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid username or password",
+            )
+        
+        access_token = create_access_token(
+            user_data={"sub": str(user.username)}, expires_delta=timedelta(minutes=1)
+        )
+        logger.info(f"Login successful for user: {form_data.username}")
+        return {"access_token": access_token, "token_type": "bearer"}
+
+    except AttributeError as e:
+        capture_exception(e)
+        logger.error(f"AttributeError: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An internal server error occurred due to a missing attribute",
+        )
+
+    except HTTPException as e:
+        capture_exception(e)
+        logger.error(f"HTTPException: {str(e.detail)}")
+        raise
+
+    except Exception as e:
+        capture_exception(e)
+        logger.error(f"Unexpected error: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An unexpected error occurred",
+        )
 
 @router.post("/register")
 def create_user(user: UserAuthSchema, db: Session = Depends(session_opener)):
-    """
-    Registers a new user with a hashed password.
+    try:
+        logger.info(f"Attempting to create user: {user.username}")
 
-    :param user: User data containing username and password.
-    :param db: Database session dependency.
-    :return: The created user object.
-    """
-    hashed_password = pwd_context.hash(user.password)
-    db_user = User(username=user.username, hashed_password=hashed_password)
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    return db_user
+        # Hash the user's password
+        hashed_password = pwd_context.hash(user.password)
+        User.validate_username(user.username)
+        User.validate_password(user.password)
+
+        # Create a new user in the database
+        db_user = User(username=user.username, hashed_password=hashed_password)
+        db.add(db_user)
+        db.commit()
+        db.refresh(db_user)
+
+        logger.info(f"User {user.username} created successfully.")
+        return db_user
+
+    except IntegrityError as e:
+        capture_exception(e)
+        logger.error(f"IntegrityError: Username {user.username} already exists.")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Username already exists. Please choose another one.",
+        )
+
+    except SQLAlchemyError as e:  # Catch database-related errors
+        capture_exception(e)
+        logger.error(f"SQLAlchemyError: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An error occurred while creating the user. Please try again later.",
+        )
+
+    except Exception as e:
+        capture_exception(e)
+        logger.error(f"Unexpected error: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An unexpected error occurred. Please try again later.",
+        )
 
 @router.get("/me")
 def read_users_me(user=Depends(authenticate_user_token)):
-    return {"username": user.username}
+    try:
+        logger.info(f"Fetching information for user: {user.username}")
+
+        if not user or not hasattr(user, 'username'):
+            raise AttributeError("User is not properly authenticated or username is missing.")
+        
+        logger.info(f"User {user.username} successfully fetched.")
+        return {"username": user.username}
+
+    except AttributeError as e:
+        capture_exception(e)
+        logger.error(f"AttributeError: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User is not authenticated or username is missing.",
+        )
+
+    except Exception as e:
+        capture_exception(e)
+        logger.error(f"Unexpected error: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An unexpected error occurred. Please try again later.",
+        )
