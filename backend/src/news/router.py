@@ -17,10 +17,7 @@ from .service import (
     get_article_upvote_details,
     toggle_upvote,
 )
-<<<<<<< HEAD
 from ..logger.base import logger
-=======
->>>>>>> e60696d77d83db2b64c8adf02896acafa03ef5f9
 
 openai_client = OpenAIClient(api_key=ai_config.OPEN_AI_KEY, model=ai_config.OPEN_AI_MODEL)
 anthropic_client = AnthropicClient(api_key=ai_config.ANTHROPIC_API_KEY, model=ai_config.ANTHROPIC_MODEL)
@@ -37,11 +34,7 @@ def get_ai_client(model: str):
         return anthropic_client
     else:
         raise ValueError("Invalid model specified. Choose 'openai' or 'anthropic'.")
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> e60696d77d83db2b64c8adf02896acafa03ef5f9
 @router.get("/news")
 def fetch_news_with_upvote_details(db: Session = Depends(session_opener)):
     try:
