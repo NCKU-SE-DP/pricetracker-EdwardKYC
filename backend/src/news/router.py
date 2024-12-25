@@ -1,7 +1,11 @@
 import logging
 from fastapi import APIRouter, Depends , HTTPException, status
 from sentry_sdk import capture_exception
+import logging
+from fastapi import APIRouter, Depends , HTTPException, status
+from sentry_sdk import capture_exception
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.exc import SQLAlchemyError
 from ..crawler.udn_crawler import UDNCrawler    
 from ..auth.service import authenticate_user_token
@@ -103,9 +107,11 @@ async def search_news_articles(request: PromptRequest):
     for news in news_items:
         try:
             logger.debug(f"Parsing news article {news.url}")
+            logger.debug(f"Parsing news article {news.url}")
             detailed_news = convert_news_to_dict(crawler.parse(news.url))
             detailed_news["id"] = next(article_id_counter)
             news_list.append(detailed_news)
+            logger.info(f"Processed news article: {news.url}")
             logger.info(f"Processed news article: {news.url}")
         except Exception as e:
             handle_api_exception(e, f"processing news article {news.url}", status.HTTP_500_INTERNAL_SERVER_ERROR, f"Error processing news article {news.url}.")
@@ -162,4 +168,6 @@ def upvote_article(
 ):
     message = toggle_upvote(article_id, user.id, db)
     return {"message": message}
+
+
 

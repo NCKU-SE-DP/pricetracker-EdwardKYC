@@ -37,7 +37,7 @@
 2024-12-19 00:22:29,327 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
 2024-12-19 00:22:29,343 - src.logger.base - INFO - Received request for necessities prices with category: None, commodity: None
 2024-12-19 00:22:29,343 - src.logger.base - INFO - API request successful. Parsing response.
-2024-12-19 00:22:29,353 - src.logger.base - INFO - Received request for necessities prices with category: ÂA¨Å, commodity: ²Î¤@·çÁJ°ªÀu½èÂA¨Å
+2024-12-19 00:22:29,353 - src.logger.base - INFO - Received request for necessities prices with category: ï¿½Aï¿½ï¿½, commodity: ï¿½Î¤@ï¿½ï¿½ï¿½Jï¿½ï¿½ï¿½uï¿½ï¿½ï¿½Aï¿½ï¿½
 2024-12-19 00:22:29,353 - src.logger.base - INFO - API request successful. Parsing response.
 2024-12-19 00:22:29,362 - src.logger.base - INFO - Attempting to create user: newuser
 2024-12-19 00:22:29,654 - src.logger.base - INFO - User newuser created successfully.
@@ -78,7 +78,7 @@
 2024-12-19 00:24:40,845 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
 2024-12-19 00:24:40,863 - src.logger.base - INFO - Received request for necessities prices with category: None, commodity: None
 2024-12-19 00:24:40,864 - src.logger.base - INFO - API request successful. Parsing response.
-2024-12-19 00:24:40,873 - src.logger.base - INFO - Received request for necessities prices with category: ÂA¨Å, commodity: ²Î¤@·çÁJ°ªÀu½èÂA¨Å
+2024-12-19 00:24:40,873 - src.logger.base - INFO - Received request for necessities prices with category: ï¿½Aï¿½ï¿½, commodity: ï¿½Î¤@ï¿½ï¿½ï¿½Jï¿½ï¿½ï¿½uï¿½ï¿½ï¿½Aï¿½ï¿½
 2024-12-19 00:24:40,874 - src.logger.base - INFO - API request successful. Parsing response.
 2024-12-19 00:24:40,882 - src.logger.base - INFO - Attempting to create user: newuser
 2024-12-19 00:24:41,166 - src.logger.base - INFO - User newuser created successfully.
@@ -119,7 +119,7 @@
 2024-12-19 00:27:15,776 - src.logger.base - ERROR - Invalid token error: Signature verification failed.
 2024-12-19 00:27:15,790 - src.logger.base - INFO - Received request for necessities prices with category: None, commodity: None
 2024-12-19 00:27:15,790 - src.logger.base - INFO - API request successful. Parsing response.
-2024-12-19 00:27:15,799 - src.logger.base - INFO - Received request for necessities prices with category: ÂA¨Å, commodity: ²Î¤@·çÁJ°ªÀu½èÂA¨Å
+2024-12-19 00:27:15,799 - src.logger.base - INFO - Received request for necessities prices with category: ï¿½Aï¿½ï¿½, commodity: ï¿½Î¤@ï¿½ï¿½ï¿½Jï¿½ï¿½ï¿½uï¿½ï¿½ï¿½Aï¿½ï¿½
 2024-12-19 00:27:15,801 - src.logger.base - INFO - API request successful. Parsing response.
 2024-12-19 00:27:15,810 - src.logger.base - INFO - Attempting to create user: newuser
 2024-12-19 00:27:16,093 - src.logger.base - INFO - User newuser created successfully.
@@ -155,7 +155,7 @@
 2024-12-19 00:31:06,466 - src.logger.base - INFO - User testuser authenticated successfully with token
 2024-12-19 00:31:10,127 - src.logger.base - INFO - Received request for necessities prices with category: None, commodity: None
 2024-12-19 00:31:10,130 - src.logger.base - INFO - API request successful. Parsing response.
-2024-12-19 00:31:10,152 - src.logger.base - INFO - Received request for necessities prices with category: ÂA¨Å, commodity: ²Î¤@·çÁJ°ªÀu½èÂA¨Å
+2024-12-19 00:31:10,152 - src.logger.base - INFO - Received request for necessities prices with category: ï¿½Aï¿½ï¿½, commodity: ï¿½Î¤@ï¿½ï¿½ï¿½Jï¿½ï¿½ï¿½uï¿½ï¿½ï¿½Aï¿½ï¿½
 2024-12-19 00:31:10,153 - src.logger.base - INFO - API request successful. Parsing response.
 2024-12-19 00:31:10,167 - src.logger.base - INFO - Attempting to create user: newuser
 2024-12-19 00:31:10,509 - src.logger.base - INFO - User newuser created successfully.
@@ -203,7 +203,7 @@
 2024-12-19 00:31:26,422 - src.logger.base - INFO - User testuser authenticated successfully with token
 2024-12-19 00:31:30,252 - src.logger.base - INFO - Received request for necessities prices with category: None, commodity: None
 2024-12-19 00:31:30,254 - src.logger.base - INFO - API request successful. Parsing response.
-2024-12-19 00:31:30,267 - src.logger.base - INFO - Received request for necessities prices with category: ÂA¨Å, commodity: ²Î¤@·çÁJ°ªÀu½èÂA¨Å
+2024-12-19 00:31:30,267 - src.logger.base - INFO - Received request for necessities prices with category: ï¿½Aï¿½ï¿½, commodity: ï¿½Î¤@ï¿½ï¿½ï¿½Jï¿½ï¿½ï¿½uï¿½ï¿½ï¿½Aï¿½ï¿½
 2024-12-19 00:31:30,269 - src.logger.base - INFO - API request successful. Parsing response.
 2024-12-19 00:31:30,281 - src.logger.base - INFO - Attempting to create user: newuser
 2024-12-19 00:31:30,630 - src.logger.base - INFO - User newuser created successfully.
@@ -241,7 +241,7 @@
 2024-12-25 21:38:47,850 - src.logger.base - INFO - User testuser authenticated successfully with token
 2024-12-25 21:38:51,871 - src.logger.base - INFO - Received request for necessities prices with category: None, commodity: None
 2024-12-25 21:38:51,872 - src.logger.base - INFO - API request successful. Parsing response.
-2024-12-25 21:38:51,883 - src.logger.base - INFO - Received request for necessities prices with category: ÂA¨Å, commodity: ²Î¤@·çÁJ°ªÀu½èÂA¨Å
+2024-12-25 21:38:51,883 - src.logger.base - INFO - Received request for necessities prices with category: ï¿½Aï¿½ï¿½, commodity: ï¿½Î¤@ï¿½ï¿½ï¿½Jï¿½ï¿½ï¿½uï¿½ï¿½ï¿½Aï¿½ï¿½
 2024-12-25 21:38:51,885 - src.logger.base - INFO - API request successful. Parsing response.
 2024-12-25 21:38:51,894 - src.logger.base - INFO - Attempting to create user: newuser
 2024-12-25 21:38:52,187 - src.logger.base - INFO - User newuser created successfully.
@@ -259,3 +259,51 @@
 2024-12-25 21:38:52,936 - src.logger.base - ERROR - performing request to None: Network Error
 2024-12-25 21:38:52,942 - src.logger.base - DEBUG - Sending GET request to None with params: {'page': 1, 'id': 'search:technology'}
 2024-12-25 21:38:52,943 - src.logger.base - INFO - Request to None was successful with status code 200
+2024-12-25 21:57:42,125 - src.logger.base - INFO - Extracting search keywords from prompt: Test search prompt...
+2024-12-25 21:57:42,126 - src.logger.base - INFO - Successfully extracted keywords: keywords
+2024-12-25 21:57:42,126 - src.logger.base - INFO - Fetching news articles for keywords: keywords
+2024-12-25 21:57:42,127 - src.logger.base - INFO - Successfully fetched 1 news articles.
+2024-12-25 21:57:42,127 - src.logger.base - DEBUG - Parsing news article http://example.com/news1
+2024-12-25 21:57:42,127 - src.logger.base - DEBUG - Parsing news article http://example.com/news1
+2024-12-25 21:57:42,128 - src.logger.base - DEBUG - Sending GET request to http://example.com/news1 with params: None
+2024-12-25 21:57:42,130 - src.logger.base - INFO - Request to http://example.com/news1 was successful with status code <Mock name='mock.status_code' id='2422664669184'>
+2024-12-25 21:57:42,131 - src.logger.base - DEBUG - Sending GET request to http://example.com/news1 with params: None
+2024-12-25 21:57:42,131 - src.logger.base - INFO - Request to http://example.com/news1 was successful with status code <Mock name='mock.status_code' id='2422664669184'>
+2024-12-25 21:57:42,132 - src.logger.base - INFO - Processed news article: http://example.com/news1
+2024-12-25 21:57:42,132 - src.logger.base - INFO - Processed news article: http://example.com/news1
+2024-12-25 21:57:42,132 - src.logger.base - INFO - Successfully sorted 1 news articles.
+2024-12-25 21:57:42,143 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-25 21:57:42,146 - src.logger.base - INFO - User testuser authenticated successfully with token
+2024-12-25 21:57:42,146 - src.logger.base - INFO - Received news summary request for user: testuser
+2024-12-25 21:57:42,147 - src.logger.base - DEBUG - Generating summary for content: Test news content...
+2024-12-25 21:57:42,147 - src.logger.base - INFO - News summary generated successfully.
+2024-12-25 21:57:42,876 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-25 21:57:42,877 - src.logger.base - INFO - User testuser authenticated successfully with token
+2024-12-25 21:57:44,867 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-25 21:57:44,870 - src.logger.base - INFO - User testuser authenticated successfully with token
+2024-12-25 21:57:50,273 - src.logger.base - INFO - Received request for necessities prices with category: None, commodity: None
+2024-12-25 21:57:50,274 - src.logger.base - INFO - API request successful. Parsing response.
+2024-12-25 21:57:50,283 - src.logger.base - INFO - Received request for necessities prices with category: ÂA¨Å, commodity: ²Î¤@·çÁJ°ªÀu½èÂA¨Å
+2024-12-25 21:57:50,283 - src.logger.base - INFO - API request successful. Parsing response.
+2024-12-25 21:57:50,292 - src.logger.base - INFO - Attempting to create user: newuser
+2024-12-25 21:57:50,590 - src.logger.base - INFO - User newuser created successfully.
+2024-12-25 21:57:50,887 - src.logger.base - INFO - Login attempt for user: testuser
+2024-12-25 21:57:51,165 - src.logger.base - INFO - Access token created for user: testuser
+2024-12-25 21:57:51,165 - src.logger.base - INFO - Login successful for user: testuser
+2024-12-25 21:57:51,174 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-25 21:57:51,176 - src.logger.base - INFO - User testuser authenticated successfully with token
+2024-12-25 21:57:51,177 - src.logger.base - INFO - Fetching information for user: testuser
+2024-12-25 21:57:51,177 - src.logger.base - INFO - User testuser successfully fetched.
+2024-12-25 21:57:51,287 - src.logger.base - DEBUG - Sending GET request to None with params: {'page': 1, 'id': 'search:technology', 'channelId': 2, 'type': 'searchword'}
+2024-12-25 21:57:51,288 - src.logger.base - INFO - Request to None was successful with status code 200
+2024-12-25 21:57:51,288 - src.logger.base - DEBUG - Sending GET request to None with params: {'page': 1, 'id': 'search:technology', 'channelId': 2, 'type': 'searchword'}
+2024-12-25 21:57:51,288 - src.logger.base - INFO - Request to None was successful with status code 200
+2024-12-25 21:57:51,292 - src.logger.base - DEBUG - Sending GET request to https://udn.com/news/test-news with params: None
+2024-12-25 21:57:51,292 - src.logger.base - INFO - Request to https://udn.com/news/test-news was successful with status code 200
+2024-12-25 21:57:51,292 - src.logger.base - DEBUG - Sending GET request to https://udn.com/news/test-news with params: None
+2024-12-25 21:57:51,292 - src.logger.base - INFO - Request to https://udn.com/news/test-news was successful with status code 200
+2024-12-25 21:57:51,298 - src.logger.base - ERROR - performing request to None: Network Error
+2024-12-25 21:57:51,302 - src.logger.base - DEBUG - Sending GET request to None with params: {'page': 1, 'id': 'search:technology'}
+2024-12-25 21:57:51,303 - src.logger.base - INFO - Request to None was successful with status code 200
+2024-12-25 21:57:51,303 - src.logger.base - DEBUG - Sending GET request to None with params: {'page': 1, 'id': 'search:technology'}
+2024-12-25 21:57:51,303 - src.logger.base - INFO - Request to None was successful with status code 200

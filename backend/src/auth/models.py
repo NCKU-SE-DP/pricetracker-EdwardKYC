@@ -10,7 +10,6 @@ class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, autoincrement=True)
     
-    # Ensure that the length is within the specified max size
     username = Column(String(MAX_USERNAME_SIZE), unique=True, nullable=False)
     hashed_password = Column(String(MAX_PASSWORD_SIZE), nullable=False)
     

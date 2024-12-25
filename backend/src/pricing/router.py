@@ -1,6 +1,10 @@
 from fastapi import APIRouter, Query , HTTPException, status
+from fastapi import APIRouter, Query , HTTPException, status
 from .config import pricing_config
 import requests
+import logging
+from requests.exceptions import RequestException
+from sentry_sdk import capture_exception
 import logging
 from requests.exceptions import RequestException
 from sentry_sdk import capture_exception

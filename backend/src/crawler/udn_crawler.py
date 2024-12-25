@@ -33,6 +33,8 @@ UDNCrawler Methods:
 """
 import logging
 from sentry_sdk import capture_exception
+import logging
+from sentry_sdk import capture_exception
 import requests
 from ..news.config import news_config
 from ..news.models import NewsArticle
@@ -82,6 +84,10 @@ class UDNCrawler(NewsCrawlerBase):
     def _perform_request(self, url: str | None = None, params: dict | None = None) -> Response:
         try:
             response = requests.get(url, params=params)
+            logger.debug(f"Sending GET request to {url} with params: {params}")
+            # 如果回應的狀態碼表示錯誤，拋出HTTPError
+            response.raise_for_status()
+            logger.info(f"Request to {url} was successful with status code {response.status_code}")
             logger.debug(f"Sending GET request to {url} with params: {params}")
             # 如果回應的狀態碼表示錯誤，拋出HTTPError
             response.raise_for_status()

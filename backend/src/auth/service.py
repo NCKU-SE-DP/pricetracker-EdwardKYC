@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError , ExpiredSignatureError
 from sqlalchemy.orm import Session
@@ -24,10 +25,10 @@ def validate_user_credentials(db_session: Session, username: str, password: str)
     if not user or not verify_password(password, user.hashed_password):
         return None
     return user
-
 def authenticate_user_token(
     token: str = Depends(oauth2_scheme),
     db: Session = Depends(session_opener),
+
 ):
     try:
         # 嘗試解碼 JWT
