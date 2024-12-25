@@ -221,3 +221,41 @@
 2024-12-19 00:31:31,492 - src.logger.base - ERROR - An unexpected error occurred while requesting None: Network Error
 2024-12-19 00:31:31,499 - src.logger.base - DEBUG - Sending GET request to None with params: {'page': 1, 'id': 'search:technology'}
 2024-12-19 00:31:31,500 - src.logger.base - INFO - Request to None was successful with status code 200
+2024-12-25 21:38:45,266 - src.logger.base - INFO - Extracting search keywords from prompt: Test search prompt...
+2024-12-25 21:38:45,267 - src.logger.base - INFO - Successfully extracted keywords: keywords
+2024-12-25 21:38:45,268 - src.logger.base - INFO - Fetching news articles for keywords: keywords
+2024-12-25 21:38:45,268 - src.logger.base - INFO - Successfully fetched 1 news articles.
+2024-12-25 21:38:45,268 - src.logger.base - DEBUG - Parsing news article http://example.com/news1
+2024-12-25 21:38:45,269 - src.logger.base - DEBUG - Sending GET request to http://example.com/news1 with params: None
+2024-12-25 21:38:45,270 - src.logger.base - INFO - Request to http://example.com/news1 was successful with status code <Mock name='mock.status_code' id='2044183111440'>
+2024-12-25 21:38:45,270 - src.logger.base - INFO - Processed news article: http://example.com/news1
+2024-12-25 21:38:45,270 - src.logger.base - INFO - Successfully sorted 1 news articles.
+2024-12-25 21:38:45,283 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-25 21:38:45,286 - src.logger.base - INFO - User testuser authenticated successfully with token
+2024-12-25 21:38:45,286 - src.logger.base - INFO - Received news summary request for user: testuser
+2024-12-25 21:38:45,287 - src.logger.base - DEBUG - Generating summary for content: Test news content...
+2024-12-25 21:38:45,287 - src.logger.base - INFO - News summary generated successfully.
+2024-12-25 21:38:46,047 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-25 21:38:46,048 - src.logger.base - INFO - User testuser authenticated successfully with token
+2024-12-25 21:38:47,849 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-25 21:38:47,850 - src.logger.base - INFO - User testuser authenticated successfully with token
+2024-12-25 21:38:51,871 - src.logger.base - INFO - Received request for necessities prices with category: None, commodity: None
+2024-12-25 21:38:51,872 - src.logger.base - INFO - API request successful. Parsing response.
+2024-12-25 21:38:51,883 - src.logger.base - INFO - Received request for necessities prices with category: 鮮乳, commodity: 統一瑞穗高優質鮮乳
+2024-12-25 21:38:51,885 - src.logger.base - INFO - API request successful. Parsing response.
+2024-12-25 21:38:51,894 - src.logger.base - INFO - Attempting to create user: newuser
+2024-12-25 21:38:52,187 - src.logger.base - INFO - User newuser created successfully.
+2024-12-25 21:38:52,490 - src.logger.base - INFO - Login attempt for user: testuser
+2024-12-25 21:38:52,766 - src.logger.base - INFO - Access token created for user: testuser
+2024-12-25 21:38:52,766 - src.logger.base - INFO - Login successful for user: testuser
+2024-12-25 21:38:52,776 - src.logger.base - DEBUG - Decoding token: eyJhbGciOi...
+2024-12-25 21:38:52,777 - src.logger.base - INFO - User testuser authenticated successfully with token
+2024-12-25 21:38:52,778 - src.logger.base - INFO - Fetching information for user: testuser
+2024-12-25 21:38:52,778 - src.logger.base - INFO - User testuser successfully fetched.
+2024-12-25 21:38:52,905 - src.logger.base - DEBUG - Sending GET request to None with params: {'page': 1, 'id': 'search:technology', 'channelId': 2, 'type': 'searchword'}
+2024-12-25 21:38:52,905 - src.logger.base - INFO - Request to None was successful with status code 200
+2024-12-25 21:38:52,912 - src.logger.base - DEBUG - Sending GET request to https://udn.com/news/test-news with params: None
+2024-12-25 21:38:52,912 - src.logger.base - INFO - Request to https://udn.com/news/test-news was successful with status code 200
+2024-12-25 21:38:52,936 - src.logger.base - ERROR - performing request to None: Network Error
+2024-12-25 21:38:52,942 - src.logger.base - DEBUG - Sending GET request to None with params: {'page': 1, 'id': 'search:technology'}
+2024-12-25 21:38:52,943 - src.logger.base - INFO - Request to None was successful with status code 200

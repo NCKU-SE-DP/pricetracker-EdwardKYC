@@ -3,7 +3,7 @@ from jose import jwt, JWTError, ExpiredSignatureError
 from sentry_sdk import capture_exception
 from requests.exceptions import RequestException, Timeout, ConnectionError, HTTPError
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
-from logger.base import logger
+from .logger.base import logger
 
 def raise_validation_error(field_name: str, max_length: int):
     raise HTTPException(
