@@ -58,12 +58,10 @@ class LLMClientTemplate(ABC):
                 model=self.model,
                 messages=messages,
             )
-            print(f"@@@ {response}")
             return response.choices[0].message.content.strip()
         except Exception as e:
             raise e
         
-#printf(f"@@@ , {response}")
 class MessagePassingInterface(BaseModel):
     """
     Represents the structure of a message sent to the LLM API.

@@ -44,7 +44,7 @@ from .crawler_base import NewsCrawlerBase, Headline, News, NewsWithSummary
 from urllib.parse import quote
 from requests.exceptions import RequestException, Timeout, ConnectionError, HTTPError
 from ..logger.base import logger
-
+from ..error import handle_request_exception
 class UDNCrawler(NewsCrawlerBase):
     CHANNEL_ID = 2
 
@@ -53,25 +53,11 @@ class UDNCrawler(NewsCrawlerBase):
         self.timeout = timeout
 
     def startup(self, search_term: str) -> list[Headline]:
-        """
-        Initializes the application by fetching news headlines for a given search term across multiple pages.
-        This method is typically called at the beginning of the program when there is no data available,
-        hence it fetches headlines from the first 10 pages.
-
-        :param search_term: The term to search for in news headlines.
-        :return: A list of Headline namedtuples containing the title and URL of news articles.
-        :rtype: list[Headline]
-        """
         return self.get_headline(search_term, page=(1, 10))
 
     def get_headline(
         self, search_term: str, page: int | tuple[int, int]
     ) -> list[Headline]:
-
-        # Calculate the range of pages to fetch news from.
-        # If 'page' is a tuple, unpack it and create a range representing those pages (inclusive).
-        # If 'page' is an int, create a list containing only that single page number.
-        # page_range = range(*page) if isinstance(page, tuple) else [page]
         page_range = range(page[0], page[1] + 1) if isinstance(page, tuple) else [page]
 
         headlines = []
@@ -101,42 +87,8 @@ class UDNCrawler(NewsCrawlerBase):
             response.raise_for_status()
             logger.info(f"Request to {url} was successful with status code {response.status_code}")
             return response
-
-        except ValueError as e:
-            # Capture ValueError when URL is not provided
-            capture_exception(e)
-            logger.error(f"Invalid input: {str(e)}")
-            raise RuntimeError(f"Invalid input: {str(e)}")
-            
-        except Timeout as e:
-            # Capture Timeout error
-            capture_exception(e)
-            logger.error(f"Request to {url} timed out: {e}")
-            raise RuntimeError(f"Request to {url} timed out: {e}")
-            
-        except ConnectionError as e:
-            # Capture ConnectionError
-            capture_exception(e)
-            logger.error(f"Connection error while requesting {url}: {e}")
-            raise RuntimeError(f"Connection error while requesting {url}: {e}")
-            
-        except HTTPError as e:
-            # Capture HTTPError such as 404 or 500
-            capture_exception(e)
-            logger.error(f"HTTP error occurred during request to {url}: {e}")
-            raise RuntimeError(f"HTTP error occurred during request to {url}: {e}")
-            
-        except RequestException as e:
-            # Capture any other Request exceptions
-            capture_exception(e)
-            logger.error(f"Failed to perform request to {url}: {e}")
-            raise RuntimeError(f"Failed to perform request to {url}: {e}")
-            
         except Exception as e:
-            # Capture all other unexpected errors
-            capture_exception(e)
-            logger.error(f"An unexpected error occurred while requesting {url}: {e}")
-            raise RuntimeError(f"An unexpected error occurred while requesting {url}: {e}")
+            handle_request_exception(e, f"performing request to {url}")
 
     @staticmethod
     def _parse_headlines(response: Response) -> list[Headline]:

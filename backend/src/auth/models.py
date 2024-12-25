@@ -5,7 +5,7 @@ from fastapi import HTTPException, status
 from ..database import Base
 from ..database import user_news_association_table
 from .constant import MAX_PASSWORD_SIZE, MAX_USERNAME_SIZE
-
+from ..error import raise_validation_error
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -22,18 +22,10 @@ class User(Base):
     
     @staticmethod
     def validate_username(username: str):
-        # If the username exceeds the max length, raise an exception
         if len(username) > MAX_USERNAME_SIZE:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Username exceeds the maximum length of {MAX_USERNAME_SIZE} characters."
-            )
+            raise_validation_error("username", MAX_USERNAME_SIZE)
 
     @staticmethod
     def validate_password(password: str):
-        # If the password exceeds the max length, raise an exception
         if len(password) > MAX_PASSWORD_SIZE:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Password exceeds the maximum length of {MAX_PASSWORD_SIZE} characters."
-            )
+            raise_validation_error("password", MAX_PASSWORD_SIZE)
