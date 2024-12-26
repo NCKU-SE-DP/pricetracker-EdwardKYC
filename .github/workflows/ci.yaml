@@ -5,18 +5,12 @@ on:
     branches:
       - 'main'
       - 'develop'
-      - 'refactor/crawler-oop-implementation'
-      - 'refactor/llm_client'
-      - 'refactor/llm-client-template-methods-pattern'
-      - 'refactor/error_handling'
-
+      - 'refactor/*'
   pull_request:
     branches:
       - 'main'
       - 'develop'
-      - 'refactor/llm_client'
-      - 'refactor/llm-client-template-methods-pattern'
-      - 'refactor/error_handling'
+      - 'refactor/*'
 
 jobs:
   test:

@@ -1,17 +1,18 @@
 from datetime import datetime, timedelta
 from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError , ExpiredSignatureError
-import logging
-
 from sqlalchemy.orm import Session
+from passlib.context import CryptContext
+from sentry_sdk import capture_exception
 
 from ..database import session_opener
 from .config import auth_config
 from .models import User
-from passlib.context import CryptContext
-from sentry_sdk import capture_exception
 from ..logger.base import logger
+from ..error import handle_http_exception , handle_token_exception , handle_access_token_exception
+import logging
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=auth_config.AUTH_TOKEN_URL)
@@ -27,6 +28,7 @@ def validate_user_credentials(db_session: Session, username: str, password: str)
 def authenticate_user_token(
     token: str = Depends(oauth2_scheme),
     db: Session = Depends(session_opener),
+
 ):
     try:
         # 嘗試解碼 JWT
@@ -35,7 +37,7 @@ def authenticate_user_token(
         username: str = payload.get("sub")
         if username is None:
             logger.warning("Token missing 'sub' field")
-            raise HTTPException(
+            handle_http_exception   (
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid token: missing subject",
                 headers={"WWW-Authenticate": "Bearer"},
@@ -45,37 +47,15 @@ def authenticate_user_token(
         user = db.query(User).filter(User.username == username).first()
         if user is None:
             logger.warning(f"User not found for token: {username}")
-            raise HTTPException(
+            handle_http_exception(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="User not found",
             )
         logger.info(f"User {username} authenticated successfully with token")
         return user
     
-    except ExpiredSignatureError as e:
-        capture_exception(e)
-        logger.error(f"Token has expired: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Token has expired",
-        )
-
-    except JWTError as e:
-        capture_exception(e)
-        logger.error(f"Invalid token error: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid token",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-
     except Exception as e:
-        capture_exception(e)
-        logger.error(f"Unexpected error during token authentication: {str(e)}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An unexpected error occurred",
-        )
+        handle_token_exception(e)
 
 def create_access_token(user_data, expires_delta=None):
     try:
@@ -94,18 +74,5 @@ def create_access_token(user_data, expires_delta=None):
         logger.info(f"Access token created for user: {user_data['sub']}")
         return encoded_jwt
     
-    except AttributeError as e:
-        capture_exception(e)
-        logger.error(f"Attribute error while creating access token: {str(e)}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An internal error occurred while creating the access token",
-        )
-    
     except Exception as e:
-        capture_exception(e)
-        logger.error(f"Unexpected error while creating access token: {str(e)}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An unexpected error occurred",
-        )
+        handle_access_token_exception(e)
